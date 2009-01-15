@@ -11,17 +11,11 @@ tokens {
 	boolean afterControl = false;
 }
 
-
 entity: 
-	//'{'! '}'! |
 	'{' entity* '}' -> ^(TREE entity*) |
 	word |
-	'{'! compound '}'! |
+	'{'! compound^ '}'! |
 	unknown ;
-/*	TEXT |
-	'{'! STAR! word^ entity* '}'! |
-	'{'! STAR! CONTROL! (NUMBER?)! (entity!)* '}'! ;
-*/
 
 word: (
 	ANSI |
@@ -43,13 +37,13 @@ word: (
 	PARD |
 	PNSTART |
 	RQUOTE |
-	RTF |
 	UC |
 	VIEWKIND
 	) NUMBER? | fontfamily ;
 	
 fontfamily: FNIL | FROMAN | FSWISS | FMODERN | FSCRIPT | FDECOR | FTECH | FBIDI ;
 compound: 
+	RTF^ NUMBER entity* |
 	fonttbl | 
 	(COLORTBL | INFO | STYLESHEET)^ entity* |
 	AUTHOR^ TEXT |
@@ -64,7 +58,7 @@ unknown:
 	control! |
 	TEXT |
 	'{'! STAR! word^ entity* '}'! |
-	'{'! STAR! CONTROL! (NUMBER?)! (entity!)* '}'! ;
+	'{'! STAR! CONTROL! (NUMBER!)? (entity!)* '}'! ;
 	
 control: CONTROL NUMBER? ;
 

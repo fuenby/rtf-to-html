@@ -51,7 +51,12 @@ word: (
 fontfamily: FNIL | FROMAN | FSWISS | FMODERN | FSCRIPT | FDECOR | FTECH | FBIDI ;
 compound: 
 	fonttbl | 
-	(COLORTBL | INFO | STYLESHEET)^ entity* ;
+	(COLORTBL | INFO | STYLESHEET)^ entity* |
+	AUTHOR^ TEXT |
+	OPERATOR^ TEXT |
+	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER |
+	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER ;
+	
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
 fontinfo: F^ NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown)* ;
 
@@ -71,12 +76,15 @@ CLOSEBRACE: '\\}' ;
 
 ANSI: '\\ansi' { afterControl = true; } ;
 ANSICPG: '\\ansicpg' { afterControl = true; } ;
+AUTHOR: '\\author' { afterControl = true; } ;
 B: '\\b' { afterControl = true; } ;
 COLORTBL: '\\colortbl' { afterControl = true; } ;
+CREATIM: '\\creatim' { afterControl = true; } ;
 DEFF: '\\deff' { afterControl = true; } ;
 DEFLANG: '\\deflang' { afterControl = true; } ;
 DEFLANGFE: '\\deflangfe' { afterControl = true; } ;
 DEFTAB: '\\deftab' { afterControl = true; } ;
+DY: '\\dy' { afterControl = true; } ;
 ENDASH: '\\endash' { afterControl = true; } ;
 F: '\\f' { afterControl = true; } ;
 FALT: '\\falt' { afterControl = true; } ;
@@ -94,17 +102,24 @@ FSCRIPT: '\\fscript' { afterControl = true; } ;
 FSWISS: '\\fswiss' { afterControl = true; } ;
 FTECH: '\\ftech' { afterControl = true; } ;
 GENERATOR: '\\generator' { afterControl = true; } ;
+HR: '\\hr' { afterControl = true; } ;
 I: '\\i' { afterControl = true; } ;
 INFO: '\\info' { afterControl = true; } ;
 LANG: '\\lang' { afterControl = true; } ;
+MIN: '\\min' { afterControl = true; } ;
+MO: '\\mo' { afterControl = true; } ;
+OPERATOR: '\\operator' { afterControl = true; } ;
 PAR: '\\par' { afterControl = true; } ;
 PARD: '\\pard' { afterControl = true; } ;
 PNSTART: '\\pnstart' { afterControl = true; } ;
+REVTIM: '\\revtim' { afterControl = true; } ;
 RQUOTE: '\\rquote' { afterControl = true; } ;
 RTF: '\\rtf' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
 VIEWKIND: '\\viewkind' { afterControl = true; } ;
+YR: '\\yr' { afterControl = true; } ;
+
 
 CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; } ;
 

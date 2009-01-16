@@ -4,12 +4,16 @@ public class Engine {
 	public class State {
 		int fontSize = 12;
 		boolean italic = false;
+		boolean bold = false;
 
 		public int getFontSize() { return fontSize; }
 		public State setFontSize(int fontSize) { this.fontSize = fontSize; return this; }
 
 		public State setItalic(boolean state) { italic = state; return this; }
 		public boolean isItalic() { return italic; }
+
+		public State setBold(boolean state) { bold = state; return this; }
+		public boolean isBold() { return bold; }
 
 		public State clone() {
 			State result = new State();
@@ -70,6 +74,11 @@ public class Engine {
 
 	public void i(boolean state) {
 		getState().setItalic(state);
+		updateState();
+	}
+
+	public void b(boolean state) {
+		getState().setBold(state);
 		updateState();
 	}
 

@@ -26,6 +26,10 @@ import java.util.Stack;
 				result.append("font-style: italic;");
 			}
 
+			if (state.isBold()) {
+				result.append("font-weight: bold;");
+			}
+
 			return result.toString();
 		}
 	}

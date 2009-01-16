@@ -26,8 +26,9 @@ bstart:
 	F NUMBER |
 	I NUMBER { engine.i(false); } | 
 	I { engine.i(true); } |
+	B { engine.b(true); } |
 	PLAIN { engine.plain(); } |
-	B NUMBER? | 
+	B NUMBER { engine.b(false); } | 
 	RQUOTE { engine.rquote(); } |
 	LANG NUMBER | 
 	^(TREE { engine.push(); } bentity* { engine.pop(); } ) ;

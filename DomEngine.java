@@ -102,6 +102,7 @@ public class DomEngine extends Engine {
 
 	public void ensurePara() {
 		if (getCurrentPara() == null) {
+			getBody().appendChild(document.createTextNode("\n"));
 			setCurrentPara(document.createElement("p"));
 			getBody().appendChild(getCurrentPara());
 
@@ -112,7 +113,15 @@ public class DomEngine extends Engine {
 	public void updateTarget() {
 		String style = StateStyle.toString(getState());
 
-		if (getCurrentTarget() != null && getCurrentTarget().getTagName().equals("span")) {
+		if (getCurrentTarget() != null) {
+			Element currentTarget = getCurrentTarget();
+			if (currentTarget.getTagName().equals("span") && currentTarget.getFirstChild() == null) {
+				Node para = currentTarget.getParentNode();
+				para.removeChild(currentTarget);
+				if (para.getFirstChild() == null) {
+					para.appendChild(document.createTextNode("\u00a0"));
+				}
+			}
 		}
 
 		if (style.length() > 0) {

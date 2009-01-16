@@ -5,17 +5,22 @@ options {
 }
 tokens {
 	TREE;
+	BODY;
+	HEADER;
 }
 
 @lexer::members {
 	boolean afterControl = false;
 }
 
+rtf: '{'! RTF^ NUMBER { assert($NUMBER.text.equals("1")); } entity* '}'! ;
+
 entity: 
 	'{' entity* '}' -> ^(TREE entity*) |
 	word |
 	'{'! compound^ '}'! |
-	unknown ;
+	unknown |
+	TEXT ;
 
 word: (
 	ANSI |
@@ -37,26 +42,31 @@ word: (
 	PARD |
 	PNSTART |
 	RQUOTE |
-	UC |
-	VIEWKIND
+	UC 
+	//VIEWKIND
 	) NUMBER? | fontfamily ;
 	
 fontfamily: FNIL | FROMAN | FSWISS | FMODERN | FSCRIPT | FDECOR | FTECH | FBIDI ;
 compound: 
-	RTF^ NUMBER entity* |
-	fonttbl | 
-	(COLORTBL | INFO | STYLESHEET)^ entity* |
+	// RTF^ NUMBER entity* |
+	fonttbl | colortbl | stylesheet | info |
+	//(COLORTBL | INFO | STYLESHEET)^ entity* |
 	AUTHOR^ TEXT |
 	OPERATOR^ TEXT |
 	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER |
 	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER ;
 	
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
-fontinfo: F^ NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown)* ;
+fontinfo: F^ NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | TEXT)* ;
+
+colortbl: COLORTBL^ entity* ;
+
+stylesheet: STYLESHEET^ entity* ; 
+
+info: INFO^ entity* ;
 
 unknown: 
 	control! |
-	TEXT |
 	'{'! STAR! word^ entity* '}'! |
 	'{'! STAR! CONTROL! (NUMBER!)? (entity!)* '}'! ;
 	
@@ -111,7 +121,7 @@ RQUOTE: '\\rquote' { afterControl = true; } ;
 RTF: '\\rtf' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
-VIEWKIND: '\\viewkind' { afterControl = true; } ;
+//VIEWKIND: '\\viewkind' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 
 

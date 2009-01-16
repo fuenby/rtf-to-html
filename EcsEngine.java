@@ -85,11 +85,11 @@ public class EcsEngine extends Engine {
 			setCurrentPara(new p());
 			getBody().addElement(getCurrentPara());
 
-			updateState();
+			updateTarget();
 		}
 	}
 
-	public void updateState() {
+	public void updateTarget() {
 		String style = StateStyle.toString(getState());
 		if (style.length() > 0) {
 			span newTarget = new span();
@@ -99,6 +99,14 @@ public class EcsEngine extends Engine {
 			getCurrentPara().addElement(getCurrentTarget());
 		} else {
 			setCurrentTarget(getCurrentPara());
+		}
+	}
+
+	public void updateState() {
+		if (getCurrentPara() == null) {
+			ensurePara();
+		} else {
+			updateTarget();
 		}
 	}
 

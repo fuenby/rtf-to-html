@@ -40,6 +40,7 @@ word: (
 	LANG |
 	PAR |
 	PARD |
+	PLAIN |
 	PNSTART |
 	RQUOTE |
 	UC 
@@ -115,6 +116,7 @@ MO: '\\mo' { afterControl = true; } ;
 OPERATOR: '\\operator' { afterControl = true; } ;
 PAR: '\\par' { afterControl = true; } ;
 PARD: '\\pard' { afterControl = true; } ;
+PLAIN: '\\plain' { afterControl = true; } ;
 PNSTART: '\\pnstart' { afterControl = true; } ;
 REVTIM: '\\revtim' { afterControl = true; } ;
 RQUOTE: '\\rquote' { afterControl = true; } ;

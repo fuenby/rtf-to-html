@@ -13,7 +13,7 @@ rtf: { engine.start(); } ^(RTF NUMBER header body) { engine.end(); } ;
 
 entity: . | ^(. entity*) ;
 
-hword: ~(TREE | TEXT | PARD | PAR | FS | F | I | LANG | B | RQUOTE) ;
+hword: ~(TREE | TEXT | PARD | PAR | FS | F | I | LANG | B | RQUOTE | PLAIN) ;
 hentity: hword | ^(hword entity*)  ;
 
 header: hentity* ;
@@ -22,10 +22,11 @@ bstart:
 	TEXT { engine.text($TEXT.text); } | 
 	PAR { engine.par(); } | 
 	PARD | 
-	FS NUMBER | 
+	FS NUMBER { engine.fs(Integer.parseInt($NUMBER.text)); } | 
 	F NUMBER |
 	I NUMBER { engine.i(false); } | 
 	I { engine.i(true); } |
+	PLAIN { engine.plain(); } |
 	B NUMBER? | 
 	RQUOTE { engine.rquote(); } |
 	LANG NUMBER | 

@@ -19,4 +19,5 @@ AntlrTokensLexer.java: AntlrTokens.g
 AntlrTokensParser.java: AntlrTokens.g
 
 run: all
-	java Main test.rtf > out.html 2> err.txt
+	java Main test.rtf > out.html 
+# 2> err.txt

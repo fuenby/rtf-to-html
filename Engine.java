@@ -6,9 +6,9 @@ public class Engine {
 		boolean italic = false;
 
 		public int getFontSize() { return fontSize; }
-		public void setFontSize(int fontSize) { this.fontSize = fontSize; }
+		public State setFontSize(int fontSize) { this.fontSize = fontSize; return this; }
 
-		public void setItalic(boolean state) { italic = state; }
+		public State setItalic(boolean state) { italic = state; return this; }
 		public boolean isItalic() { return italic; }
 
 		public State clone() {
@@ -73,6 +73,10 @@ public class Engine {
 		updateState();
 	}
 
+	public void plain() {
+		getState().setItalic(false);
+		updateState();
+	}
 
 	public void setFontSize(int fontSize) {
 		getState().setFontSize(fontSize);

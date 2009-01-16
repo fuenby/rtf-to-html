@@ -1,6 +1,11 @@
 import org.w3c.dom.*;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
 import java.util.Stack;
 
 class StateStyle {
@@ -47,26 +52,34 @@ public class DomEngine extends Engine {
 	Element currentPara;
 	Element currentTarget;
 
-	public DomEngine() throws ParserConfigurationException {
-		document = DocumentBuilderFactory.newInstance().newDocumentBuilder().getDOMImplementation().createDocument("http://www.w3.org/1999/xhtml", "html", null);
+	public DomEngine() throws Exception {
+		document = DOMImplementationRegistry.newInstance().getDOMImplementation("XML 1.0").createDocument("http://www.w3.org/1999/xhtml", "html", null);
+		if (document == null) {
+			System.err.println("Couldn't find suitable DOM implementation!");
+			throw new RuntimeException();
+		}
 
-		htmlNode = document.createElement("html");
+		htmlNode = document.getDocumentElement(); // .createElement("html");
 		headNode = document.createElement("head");
 		bodyNode = document.createElement("body");
 
-		document.appendChild(getHtml());
+		// document.appendChild(getHtml());
 		getHtml().appendChild(getHead());
 		getHtml().appendChild(getBody());
 
 		// document.setCodeset("UTF-8");
 
+		styleNode = document.createElement("style");
 		styleNode.setAttribute("type", "text/css");
 		styleNode.appendChild(document.createTextNode("body { font-size: 12pt; }\n"));
 		getHead().appendChild(styleNode);
 	}
 	
 	public void end() {
-		System.out.print(document.toString());
+		try {
+		TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(System.out));
+		} catch(Exception e) {}
+		// System.out.print(document.getDocumentElement().toString());
 		super.end();
 	}
 
@@ -99,7 +112,7 @@ public class DomEngine extends Engine {
 	public void updateTarget() {
 		String style = StateStyle.toString(getState());
 
-		if (getCurrentTarget().getTagName().equals("span")) {
+		if (getCurrentTarget() != null && getCurrentTarget().getTagName().equals("span")) {
 		}
 
 		if (style.length() > 0) {

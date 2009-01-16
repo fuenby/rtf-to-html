@@ -24,10 +24,11 @@ bstart:
 	PARD | 
 	FS NUMBER | 
 	F NUMBER |
-	I NUMBER? | 
-	B | 
+	I NUMBER { engine.i(false); } | 
+	I { engine.i(true); } |
+	B NUMBER? | 
 	RQUOTE { engine.rquote(); } |
 	LANG NUMBER | 
-	^(TREE bentity*) ;
+	^(TREE { engine.push(); } bentity* { engine.pop(); } ) ;
 bentity: bstart ;
 body: { engine.body(); } bstart bentity* { engine.endbody(); } ;

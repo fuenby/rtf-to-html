@@ -96,6 +96,12 @@ public class DomEngine extends Engine {
 	}
 
 	public void par() {
+		if (getCurrentPara() == null) {
+			Element para = document.createElement("p");
+			para.appendChild(document.createTextNode("\u00a0"));
+			getBody().appendChild(para);
+		}
+
 		setCurrentPara(null);
 	}
 

@@ -71,7 +71,7 @@ public class DomEngine extends Engine {
 
 		styleNode = document.createElement("style");
 		styleNode.setAttribute("type", "text/css");
-		styleNode.appendChild(document.createTextNode("body { font-size: 12pt; }\n"));
+		styleNode.appendChild(document.createTextNode("body { font-size: 12pt; width: 40em; margin: 0 auto; }\n"));
 		getHead().appendChild(styleNode);
 	}
 	

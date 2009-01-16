@@ -131,7 +131,7 @@ CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; } ;
 
 NUMBER: {afterControl}? => '-'? '0'..'9'+ ;
 WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;
-NEWLINE: ('\n' | '\r') { skip(); } ;
+NEWLINE: ('\n' | '\r') { skip(); afterControl = false; } ;
 
 fragment HEX: '0'..'9' | 'a'..'z' ;
 fragment HEXCHAR: '\\' '\'' a=HEX b=HEX { setText($a.text + $b.text); };

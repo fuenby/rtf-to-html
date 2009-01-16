@@ -6,7 +6,12 @@ options {
 }
 
 @members {
-Engine engine = new EcsEngine();
+	Engine engine;
+
+	public Convert(TreeNodeStream input, Engine engine) {
+		this(input);
+		this.engine = engine;
+	}
 }
 
 rtf: { engine.start(); } ^(RTF NUMBER header body) { engine.end(); } ;

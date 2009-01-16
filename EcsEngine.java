@@ -95,6 +95,10 @@ public class EcsEngine extends Engine {
 
 	public void updateTarget() {
 		String style = StateStyle.toString(getState());
+
+		if (getCurrentTarget() instanceof span) {
+		}
+
 		if (style.length() > 0) {
 			span newTarget = new span();
 			newTarget.addAttribute("style", style);

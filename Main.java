@@ -26,8 +26,9 @@ public class Main {
 		} else {
 			RtfParser parser = new RtfParser(stream);
 			CommonTree tree = (CommonTree) parser.rtf().getTree();
+			Engine engine = new DomEngine();
 
-			Convert convert = new Convert(new CommonTreeNodeStream(tree));
+			Convert convert = new Convert(new CommonTreeNodeStream(tree, engine));
 			convert.rtf();
 		}
 	}

@@ -56,8 +56,8 @@ compound:
 	//(COLORTBL | INFO | STYLESHEET)^ entity* |
 	AUTHOR^ TEXT |
 	OPERATOR^ TEXT |
-	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER |
-	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER ;
+	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
+	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? ;
 	
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
 fontinfo: F^ NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | TEXT)* ;
@@ -80,7 +80,7 @@ STAR: '\\*' ;
 OPENBRACE: '\\{' ;
 CLOSEBRACE: '\\}' ;
 NBSP: '\\~' ;
-// OTHER: '\\' ~('\\' | '\'' | '*' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
+OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 
 
@@ -119,13 +119,14 @@ LANG: '\\lang' { afterControl = true; } ;
 MIN: '\\min' { afterControl = true; } ;
 MO: '\\mo' { afterControl = true; } ;
 OPERATOR: '\\operator' { afterControl = true; } ;
-PAR: '\\par' { afterControl = true; } ;
+PAR: ('\\par' | '\\\n' | '\\\r') { afterControl = true; } ;
 PARD: '\\pard' { afterControl = true; } ;
 PLAIN: '\\plain' { afterControl = true; } ;
 PNSTART: '\\pnstart' { afterControl = true; } ;
 REVTIM: '\\revtim' { afterControl = true; } ;
 RQUOTE: '\\rquote' { afterControl = true; } ;
 RTF: '\\rtf' { afterControl = true; } ;
+SEC: '\\sec' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;

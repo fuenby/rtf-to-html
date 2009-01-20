@@ -18,7 +18,7 @@ rtf: { engine.start(); } ^(RTF NUMBER header body) { engine.end(); } ;
 
 entity: . | ^(. entity*) ;
 
-hword: FONTTBL | DEFF | COLORTBL | INFO | ANSI | ANSICPG | DEFLANG | NUMBER | DEFLANGFE | DEFTAB | STYLESHEET ;
+hword: FONTTBL | DEFF | COLORTBL | INFO | ANSI | ANSICPG NUMBER { engine.ansicpg(Integer.parseInt($NUMBER.text)); } | DEFLANG | NUMBER | DEFLANGFE | DEFTAB | STYLESHEET ;
 hentity: hword | ^(hword entity*)  ;
 
 header: hentity* ;
@@ -35,6 +35,7 @@ bstart:
 	I { engine.i(true); } |
 	B { engine.b(true); } |
 	PLAIN { engine.plain(); } |
+	ENDASH { engine.endash(); } | 
 	B NUMBER { engine.b(false); } | 
 	RQUOTE { engine.rquote(); } |
 	LANG NUMBER | 

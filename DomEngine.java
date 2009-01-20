@@ -86,7 +86,7 @@ public class DomEngine extends Engine {
 	public void text(String text) {
 		ensurePara();
 
-		getCurrentTarget().appendChild(document.createTextNode(text));
+		getCurrentTarget().appendChild(document.createTextNode(decode(text)));
 	}
 
 	public void rquote() {
@@ -147,6 +147,10 @@ public class DomEngine extends Engine {
 		} else {
 			updateTarget();
 		}
+	}
+
+	public void outText(String text) {
+		getCurrentTarget().appendChild(document.createTextNode(text));
 	}
 
 	Element getHtml() {

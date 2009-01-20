@@ -77,6 +77,7 @@ SLASH: '\\\\' ;
 STAR: '\\*' ;
 OPENBRACE: '\\{' ;
 CLOSEBRACE: '\\}' ;
+OTHER: '\\' ~('\\' | '\'' | '*' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 
 ANSI: '\\ansi' { afterControl = true; } ;
@@ -133,10 +134,10 @@ NUMBER: {afterControl}? => '-'? '0'..'9'+ ;
 WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;
 NEWLINE: ('\n' | '\r') { skip(); afterControl = false; } ;
 
-fragment HEX: '0'..'9' | 'a'..'z' ;
-fragment HEXCHAR: '\\' '\'' a=HEX b=HEX { setText($a.text + $b.text); };
+fragment HEX: '0'..'9' | 'a'..'f' ;
+fragment HEXCHAR: '\\' '\'' a=HEX b=HEX { setText(new String(new byte[] { (byte) Integer.parseInt($a.text + $b.text, 16) })); };
 fragment ETEXT: ~('\\' | '{' | '}' | '\n' | '\r')+ | (HEXCHAR) => HEXCHAR ;
 TEXT: 
-	{!afterControl}? =>  ETEXT | 
+	{!afterControl}? => ((HEXCHAR) =>  HEXCHAR ETEXT* | '0'..'9' | '-' | ' ') |
 	~(' ' | '0'..'9' | '-' | '\\' | '{' | '}' | '\n' | '\r' | ';') ETEXT* { afterControl = false; } | ';' ;
 	

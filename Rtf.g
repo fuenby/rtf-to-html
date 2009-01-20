@@ -20,7 +20,9 @@ entity:
 	word |
 	'{'! compound^ '}'! |
 	unknown |
-	TEXT ;
+	text ;
+
+text: (TEXT | NBSP | HEXCHAR)+ ;
 
 word: (
 	ANSI |
@@ -77,6 +79,7 @@ SLASH: '\\\\' ;
 STAR: '\\*' ;
 OPENBRACE: '\\{' ;
 CLOSEBRACE: '\\}' ;
+NBSP: '\\~' ;
 // OTHER: '\\' ~('\\' | '\'' | '*' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 
@@ -136,10 +139,8 @@ WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;
 NEWLINE: ('\n' | '\r') { skip(); afterControl = false; } ;
 
 fragment HEX: '0'..'9' | 'a'..'f' ;
-fragment HEXCHAR: '\\' '\'' HEX HEX ; // { setText(new String(new byte[] { (byte) Integer.parseInt($a.text + $b.text, 16) })); };
-fragment ETEXT: ~('\\' | '{' | '}' | '\n' | '\r') | (HEXCHAR) => HEXCHAR ;
+HEXCHAR: '\\' '\'' HEX HEX { afterControl = false; } ;
 
 TEXT: 
-	{!afterControl}? => (~('\\' | '{' | '}' | '\n' | '\r') | (HEXCHAR) => HEXCHAR)+ |
-	~(' ' | '0'..'9' | '-' | '\\' | '{' | '}' | '\n' | '\r') (~('\\' | '{' | '}' | '\n' | '\r') | (HEXCHAR) => HEXCHAR)* { afterControl = false; } ;
-	
+	{!afterControl}? => ~('\\' | '{' | '}' | '\n' | '\r')+ |
+	~(' ' | '0'..'9' | '-' | '\\' | '{' | '}' | '\n' | '\r') ~('\\' | '{' | '}' | '\n' | '\r')* { afterControl = false; } ;

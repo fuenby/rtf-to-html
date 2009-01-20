@@ -18,13 +18,15 @@ rtf: { engine.start(); } ^(RTF NUMBER header body) { engine.end(); } ;
 
 entity: . | ^(. entity*) ;
 
-hword: ~(TREE | TEXT | PARD | PAR | FS | F | I | LANG | B | RQUOTE | PLAIN) ;
+hword: FONTTBL | DEFF | COLORTBL | INFO | ANSI | ANSICPG | DEFLANG | NUMBER | DEFLANGFE | DEFTAB | STYLESHEET ;
 hentity: hword | ^(hword entity*)  ;
 
 header: hentity* ;
 
 bstart: 
 	TEXT { engine.text($TEXT.text); } | 
+	NBSP { engine.text(" "); } | 
+	HEXCHAR { engine.text("#"); } |
 	PAR { engine.par(); } | 
 	PARD | 
 	FS NUMBER { engine.fs(Integer.parseInt($NUMBER.text)); } | 

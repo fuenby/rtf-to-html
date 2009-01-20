@@ -1,6 +1,7 @@
 SUFFIXES=.java .class .g
 
 all: AntlrTokensLexer.class AntlrTokensParser.class Engine.class DomEngine.class RtfLexer.class RtfParser.class Convert.class Main.class
+	jar cvfm RtfParser.jar manifest.txt *.class org/antlr/runtime/*.class org/antlr/runtime/tree/*.class
 
 %.class: %.java
 	javac $<

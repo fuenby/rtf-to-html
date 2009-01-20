@@ -22,7 +22,7 @@ entity:
 	unknown |
 	text ;
 
-text: (TEXT | NBSP | HEXCHAR)+ ;
+text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH)+ ;
 
 word: (
 	ANSI |
@@ -32,7 +32,6 @@ word: (
 	DEFLANG |
 	DEFLANGFE |
 	DEFTAB |
-	ENDASH |
 	F |
 	FALT |
 	FNAME |
@@ -95,6 +94,7 @@ DEFLANG: '\\deflang' { afterControl = true; } ;
 DEFLANGFE: '\\deflangfe' { afterControl = true; } ;
 DEFTAB: '\\deftab' { afterControl = true; } ;
 DY: '\\dy' { afterControl = true; } ;
+EMDASH: '\\emdash' { afterControl = true; } ;
 ENDASH: '\\endash' { afterControl = true; } ;
 F: '\\f' { afterControl = true; } ;
 FALT: '\\falt' { afterControl = true; } ;

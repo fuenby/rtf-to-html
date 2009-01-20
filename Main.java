@@ -1,6 +1,7 @@
 import org.antlr.runtime.*;
 import org.antlr.runtime.tree.*;
 import java.util.Hashtable;
+import java.util.Iterator;
 
 public class Main {
 	public static void main(String args[]) throws Exception {
@@ -28,8 +29,21 @@ public class Main {
 			CommonTree tree = (CommonTree) parser.rtf().getTree();
 			Engine engine = new DomEngine();
 
-			Convert convert = new Convert(new CommonTreeNodeStream(tree), engine);
-			convert.rtf();
+			CommonTreeNodeStream s = new CommonTreeNodeStream(tree);
+				
+			if (args.length > 1 && args[1].equals("-r")) {
+				Iterator it = s.iterator();
+				while (it.hasNext()) {
+					CommonToken t = (CommonToken) ((CommonTree) it.next()).getToken();
+					String tokName = tokHash.get(Integer.toString(t.getType()));
+					System.out.print(tokName + (tokName != null && tokName.charAt(0) == '\'' ? "" : "='" + t.getText() + "'") + " ");
+				}
+
+				// System.out.println(s.toTokenString(0, 100));
+			} else {
+				Convert convert = new Convert(s, engine);
+				convert.rtf();
+			}	
 		}
 	}
 

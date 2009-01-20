@@ -69,6 +69,10 @@ public class Engine {
 		outText("--");
 	}
 
+	public void emdash() {
+		outText("---");
+	}
+
 	public void fs(int rtfSize) {
 		int ptSize = rtfSize / 2;
 		if (getFontSize() != ptSize) {

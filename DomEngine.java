@@ -150,6 +150,8 @@ public class DomEngine extends Engine {
 	}
 
 	public void outText(String text) {
+		ensurePara();
+
 		getCurrentTarget().appendChild(document.createTextNode(text));
 	}
 

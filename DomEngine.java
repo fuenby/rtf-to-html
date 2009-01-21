@@ -1,12 +1,11 @@
-import org.w3c.dom.*;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import java.util.Stack;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import java.util.Stack;
+import org.w3c.dom.*;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 class StateStyle {
 	Engine.State state;

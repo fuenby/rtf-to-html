@@ -60,7 +60,7 @@ compound:
 	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? ;
 	
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
-fontinfo: F^ NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | TEXT)* ;
+fontinfo: F fn=NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | TEXT)* -> ^(F $fn TEXT);
 
 colortbl: COLORTBL^ ((RED NUMBER)? (GREEN NUMBER)? (BLUE NUMBER)? TEXT)* ;
 

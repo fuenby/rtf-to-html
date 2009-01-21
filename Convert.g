@@ -19,7 +19,10 @@ rtf: { engine.start(); } ^(RTF NUMBER header body) { engine.end(); } ;
 entity: . | ^(. entity*) ;
 
 hword: DEFF NUMBER | ANSI | ANSICPG NUMBER { engine.ansicpg(Integer.parseInt($NUMBER.text)); } | DEFLANG NUMBER | DEFLANGFE NUMBER | DEFTAB NUMBER | UC NUMBER ;
-hentity: hword | ^((FONTTBL | COLORTBL | STYLESHEET | INFO | GENERATOR) entity*)  ;
+hentity: hword | ^((COLORTBL | STYLESHEET | INFO | GENERATOR) entity*) | fonttbl ;
+
+fonttbl: ^(FONTTBL fontdesc*) ;
+fontdesc: ^(F NUMBER TEXT) { engine.font($NUMBER.text, new Engine.Font($TEXT.text.substring(0, $TEXT.text.length() - 1))); } ;
 
 header: hentity* ;
 

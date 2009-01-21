@@ -1,3 +1,4 @@
+import java.util.Hashtable;
 import java.util.Stack;
 import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
@@ -41,10 +42,20 @@ public class Engine {
 		}
 	}
 
+	public static class Font {
+		String name;
+
+		public Font(String name) {
+			this.name = name;
+		}
+
+		public String getFontName() { return name; }
+	}
+
 	protected Charset codePage = Charset.forName("ISO-8859-1");
 	private Stack<State> stateStack = new Stack<State>();
 	private ProgramState programState = new ProgramState();
-
+	private Hashtable<String, Font> fonts = new Hashtable<String, Font>();
 
 	public Engine() {
 	}
@@ -69,6 +80,11 @@ public class Engine {
 	public void body() {}
 	
 	public void endbody() {}
+
+	public void font(String number, Font font) {
+		fonts.put(number, font);
+		System.err.println("Font " + number + ": " + font.getFontName());
+	}
 
 	public void text(String text) {
 		outText(decode(text));

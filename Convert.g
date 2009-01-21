@@ -28,6 +28,9 @@ bstart:
 	NBSP { engine.outText("\u00a0"); } | 
 	HEXCHAR { engine.outText("#"); } |
 	BULLET { engine.outText("\u2022"); } |
+	SLASH { engine.outText("\\"); } | 
+	OPENBRACE { engine.outText("{"); } | 
+	CLOSEBRACE { engine.outText("}"); } |
 	PAR { engine.par(); } | 
 	PARD | 
 	FS NUMBER { engine.fs(Integer.parseInt($NUMBER.text)); } | 

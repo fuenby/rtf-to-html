@@ -17,12 +17,12 @@ rtf: '{'! RTF^ NUMBER { assert($NUMBER.text.equals("1")); } entity* '}'! ;
 
 entity: 
 	'{' entity* '}' -> ^(TREE entity*) |
-	word |
 	'{'! compound^ '}'! |
 	unknown |
-	text ;
+	text |
+	word ;
 
-text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET)+ ;
+text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE)+ ;
 
 word: (
 	ANSI |
@@ -61,7 +61,7 @@ compound:
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
 fontinfo: F^ NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | TEXT)* ;
 
-colortbl: COLORTBL^ entity* ;
+colortbl: COLORTBL^ ((RED NUMBER)? (GREEN NUMBER)? (BLUE NUMBER)? TEXT)* ;
 
 stylesheet: STYLESHEET^ entity* ; 
 
@@ -126,6 +126,9 @@ PLAIN: '\\plain' { afterControl = true; } ;
 PNSTART: '\\pnstart' { afterControl = true; } ;
 REVTIM: '\\revtim' { afterControl = true; } ;
 RQUOTE: '\\rquote' { afterControl = true; } ;
+RED: '\\red' { afterControl = true; } ;
+GREEN: '\\green' { afterControl = true; } ;
+BLUE: '\\blue' { afterControl = true; } ;
 RTF: '\\rtf' { afterControl = true; } ;
 SEC: '\\sec' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
@@ -134,7 +137,7 @@ UC: '\\uc' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 
 
-CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; } ;
+CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; System.err.println("Ignoring " + getText()); } ;
 
 NUMBER: {afterControl}? => '-'? '0'..'9'+ ;
 WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;

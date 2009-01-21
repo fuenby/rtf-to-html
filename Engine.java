@@ -4,10 +4,23 @@ import java.nio.ByteBuffer;
 
 
 public class Engine {
+	public class ProgramState {
+		private int paperWidth = 12240; // in twips (tenths of points)
+
+		public ProgramState() {
+		}
+
+		public int getPaperWidth() { return paperWidth; }
+		public void setPaperWidth(int paperWidth) { this.paperWidth = paperWidth; }
+	}
+
 	public class State {
 		int fontSize = 12;
 		boolean italic = false;
 		boolean bold = false;
+
+		public State() {
+		}
 
 		public int getFontSize() { return fontSize; }
 		public State setFontSize(int fontSize) { this.fontSize = fontSize; return this; }
@@ -21,12 +34,16 @@ public class Engine {
 		public State clone() {
 			State result = new State();
 			result.setFontSize(getFontSize());
+			result.setItalic(isItalic());
+			result.setBold(isBold());
 
 			return result;
 		}
 	}
 
 	protected Charset codePage = Charset.forName("ISO-8859-1");
+	private Stack<State> stateStack = new Stack<State>();
+	private ProgramState programState = new ProgramState();
 
 
 	public Engine() {
@@ -97,6 +114,10 @@ public class Engine {
 		updateState();
 	}
 
+	public void line() {
+		System.out.println();
+	}
+
 	public void ansicpg(int codepage) {
 		String codepageName = "windows-" + Integer.toString(codepage);
 		try {
@@ -115,6 +136,10 @@ public class Engine {
 		return stateStack.peek();
 	}
 
+	public ProgramState getProgramState() {
+		return programState;
+	}
+
 	public int getFontSize() {
 		return getState().getFontSize();
 	}
@@ -129,5 +154,4 @@ public class Engine {
 		System.out.print(text);
 	}
 
-	private Stack<State> stateStack = new Stack<State>();
 }

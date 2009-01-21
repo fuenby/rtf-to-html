@@ -25,6 +25,7 @@ header: hentity* ;
 
 bstart: 
 	TEXT { engine.text($TEXT.text); } | 
+	LINE { engine.line(); } | 
 	NBSP { engine.outText("\u00a0"); } | 
 	HEXCHAR { engine.outText("#"); } |
 	BULLET { engine.outText("\u2022"); } |

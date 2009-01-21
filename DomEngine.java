@@ -63,24 +63,25 @@ public class DomEngine extends Engine {
 		headNode = document.createElement("head");
 		bodyNode = document.createElement("body");
 
-		// document.appendChild(getHtml());
 		getHtml().appendChild(getHead());
 		getHtml().appendChild(getBody());
-
-		// document.setCodeset("UTF-8");
-
-		styleNode = document.createElement("style");
-		styleNode.setAttribute("type", "text/css");
-		styleNode.appendChild(document.createTextNode("body { font-size: 12pt; width: 40em; margin: 0 auto; }\n"));
-		getHead().appendChild(styleNode);
 	}
 	
 	public void end() {
 		try {
-		TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(System.out));
+			styleNode = document.createElement("style");
+			styleNode.setAttribute("type", "text/css");
+			styleNode.appendChild(document.createTextNode("body { font-size: 12pt; width: 40em; margin: 0 auto; }\n"));
+			getHead().appendChild(styleNode);
+
+			TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(System.out));
 		} catch(Exception e) {}
 		// System.out.print(document.getDocumentElement().toString());
 		super.end();
+	}
+
+	public void line() {
+		getCurrentTarget().appendChild(document.createElement("br"));
 	}
 
 	public void text(String text) {

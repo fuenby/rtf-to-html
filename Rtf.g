@@ -26,6 +26,7 @@ text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CL
 
 word: (
 	ANSI |
+	LINE |
 	ANSICPG |
 	B |
 	DEFF |
@@ -133,6 +134,7 @@ RTF: '\\rtf' { afterControl = true; } ;
 SEC: '\\sec' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
+LINE: '\\line' { afterControl = true; } ;
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 

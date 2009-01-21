@@ -22,7 +22,7 @@ entity:
 	unknown |
 	text ;
 
-text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH)+ ;
+text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET)+ ;
 
 word: (
 	ANSI |
@@ -87,6 +87,7 @@ ANSI: '\\ansi' { afterControl = true; } ;
 ANSICPG: '\\ansicpg' { afterControl = true; } ;
 AUTHOR: '\\author' { afterControl = true; } ;
 B: '\\b' { afterControl = true; } ;
+BULLET: '\\bullet' { afterControl = true; } ;
 COLORTBL: '\\colortbl' { afterControl = true; } ;
 CREATIM: '\\creatim' { afterControl = true; } ;
 DEFF: '\\deff' { afterControl = true; } ;

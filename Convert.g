@@ -25,8 +25,9 @@ header: hentity* ;
 
 bstart: 
 	TEXT { engine.text($TEXT.text); } | 
-	NBSP { engine.text(" "); } | 
-	HEXCHAR { engine.text("#"); } |
+	NBSP { engine.outText("\u00a0"); } | 
+	HEXCHAR { engine.outText("#"); } |
+	BULLET { engine.outText("\u2022"); } |
 	PAR { engine.par(); } | 
 	PARD | 
 	FS NUMBER { engine.fs(Integer.parseInt($NUMBER.text)); } | 

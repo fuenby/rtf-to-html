@@ -6,13 +6,19 @@ import java.nio.ByteBuffer;
 
 public class Engine {
 	public class ProgramState {
-		private int paperWidth = 12240; // in twips (tenths of points)
+		private int paperWidth = 12240; // in twips (twentieths of points)
+		private int leftMargin = 1800;
+		private int rightMargin = 1800;
 
 		public ProgramState() {
 		}
 
 		public int getPaperWidth() { return paperWidth; }
 		public void setPaperWidth(int paperWidth) { this.paperWidth = paperWidth; }
+
+		public int getLeftMargin() { return leftMargin; }
+
+		public int getRightMargin() { return rightMargin; }
 	}
 
 	public class State {
@@ -51,9 +57,13 @@ public class Engine {
 		public enum Align { LEFT, RIGHT, JUSTIFY, CENTER };
 
 		private Align align = Align.LEFT;
+		private int firstLineIndent = 720;
 
 		public Align getAlign() { return align; }
 		public ParaState setAlign(Align align) { this.align = align; return this; }
+
+		public int getFirstLineIndent() { return firstLineIndent; }
+		public ParaState setFirstLineIndent(int firstLineIndent) { this.firstLineIndent = firstLineIndent; return this; }
 	}
 
 	public static class Font {
@@ -136,6 +146,12 @@ public class Engine {
 
 	public void emdash() {
 		outText("---");
+	}
+
+	public void fi(int firstLineIndent) {
+		getParaState().setFirstLineIndent(firstLineIndent);
+
+		updateParaState();
 	}
 
 	public void fs(int rtfSize) {

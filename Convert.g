@@ -53,6 +53,7 @@ bstart:
 	I NUMBER { engine.i(false); } | 
 	I { engine.i(true); } |
 	B { engine.b(true); } |
+	FI NUMBER { engine.fi(Integer.parseInt($NUMBER.text)); } |
 	PLAIN { engine.plain(); } |
 	EMDASH { engine.emdash(); } | 
 	ENDASH { engine.endash(); } | 

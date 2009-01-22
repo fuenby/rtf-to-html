@@ -46,6 +46,7 @@ word: (
 	PNSTART |
 	RQUOTE |
 	QC |
+	FI |
 	UC 
 	//VIEWKIND
 	) NUMBER? | fontfamily ;
@@ -138,6 +139,7 @@ UC: '\\uc' { afterControl = true; } ;
 LINE: '\\line' { afterControl = true; } ;
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
 QC: '\\qc' { afterControl = true; } ;
+FI: '\\fi' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 
 

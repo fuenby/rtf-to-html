@@ -53,6 +53,12 @@ class ParaStyle {
 				break;
 		}
 
+		if (state.getFirstLineIndent() != 720) {
+			result.append("text-indent: ");
+			result.append(state.getFirstLineIndent() / 20);
+			result.append("pt;");
+		}
+
 		return result.toString();
 	}
 }
@@ -90,9 +96,15 @@ public class DomEngine extends Engine {
 			styleNode.setAttribute("type", "text/css");
 
 			StringBuilder bodyStyle = new StringBuilder();
-			bodyStyle.append("body { font-size: 12pt; width: ");
+			bodyStyle.append("html { font-size: 12pt; width: ");
 			bodyStyle.append(getProgramState().getPaperWidth() / 20);
-			bodyStyle.append("pt; margin: 0 auto; }\np { margin: 0 auto; text-indent: 2em; }\n");
+			bodyStyle.append("pt; margin: 0 auto; }\n");
+			bodyStyle.append("body { padding-left: ");
+			bodyStyle.append(getProgramState().getLeftMargin() / 20);
+			bodyStyle.append("pt; padding-right: ");
+			bodyStyle.append(getProgramState().getRightMargin() / 20);
+			bodyStyle.append("pt; }\n");
+			bodyStyle.append("p { margin: 0 auto; text-indent: 36pt; background-color: yellow; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(styleNode);

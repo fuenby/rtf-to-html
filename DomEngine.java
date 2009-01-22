@@ -35,6 +35,24 @@ class StateStyle {
 			result.append("font-weight: bold;");
 		}
 
+		if (state.getFont() != null) {
+			result.append("font-family: " + state.getFont().getFontName() + ";");
+		}
+
+		return result.toString();
+	}
+}
+
+class ParaStyle {
+	public static String toString(Engine.ParaState state) {
+		StringBuilder result = new StringBuilder();
+
+		switch (state.getAlign()) {
+			case CENTER:
+				result.append("text-align: center;");
+				break;
+		}
+
 		return result.toString();
 	}
 }
@@ -70,7 +88,13 @@ public class DomEngine extends Engine {
 		try {
 			styleNode = document.createElement("style");
 			styleNode.setAttribute("type", "text/css");
-			styleNode.appendChild(document.createTextNode("body { font-size: 12pt; width: 40em; margin: 0 auto; }\n"));
+
+			StringBuilder bodyStyle = new StringBuilder();
+			bodyStyle.append("body { font-size: 12pt; width: ");
+			bodyStyle.append(getProgramState().getPaperWidth() / 20);
+			bodyStyle.append("pt; margin: 0 auto; }\np { margin: 0 auto; text-indent: 2em; }\n");
+			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
+
 			getHead().appendChild(styleNode);
 
 			TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(System.out));
@@ -102,9 +126,9 @@ public class DomEngine extends Engine {
 			getBody().appendChild(para);
 		}
 
+		updateParaState();
 		setCurrentPara(null);
 	}
-
 
 	public void ensurePara() {
 		if (getCurrentPara() == null) {
@@ -146,6 +170,15 @@ public class DomEngine extends Engine {
 			ensurePara();
 		} else {
 			updateTarget();
+		}
+	}
+
+	public void updateParaState() {
+		ensurePara();
+
+		String style = ParaStyle.toString(getParaState());
+		if (style.length() > 0) {
+			getCurrentPara().setAttribute("style", style);
 		}
 	}
 

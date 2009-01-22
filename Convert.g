@@ -18,7 +18,14 @@ rtf: { engine.start(); } ^(RTF NUMBER header body) { engine.end(); } ;
 
 entity: . | ^(. entity*) ;
 
-hword: DEFF NUMBER | ANSI | ANSICPG NUMBER { engine.ansicpg(Integer.parseInt($NUMBER.text)); } | DEFLANG NUMBER | DEFLANGFE NUMBER | DEFTAB NUMBER | UC NUMBER ;
+hword: 
+	DEFF NUMBER { engine.deff($NUMBER.text); } |
+	ANSI |
+	ANSICPG NUMBER { engine.ansicpg(Integer.parseInt($NUMBER.text)); } |
+	DEFLANG NUMBER |
+	DEFLANGFE NUMBER |
+	DEFTAB NUMBER |
+	UC NUMBER ;
 hentity: hword | ^((COLORTBL | STYLESHEET | INFO | GENERATOR) entity*) | fonttbl ;
 
 fonttbl: ^(FONTTBL fontdesc*) ;
@@ -30,15 +37,19 @@ bstart:
 	TEXT { engine.text($TEXT.text); } | 
 	LINE { engine.line(); } | 
 	NBSP { engine.outText("\u00a0"); } | 
-	HEXCHAR { engine.outText("#"); } |
+	HEXCHAR {
+		int code = Integer.parseInt($HEXCHAR.text.substring(2), 16);
+		engine.charCode(code); 
+		} |
+	QC { engine.qc(); } |
 	BULLET { engine.outText("\u2022"); } |
 	SLASH { engine.outText("\\"); } | 
 	OPENBRACE { engine.outText("{"); } | 
 	CLOSEBRACE { engine.outText("}"); } |
 	PAR { engine.par(); } | 
-	PARD | 
+	PARD { engine.pard(); } | 
 	FS NUMBER { engine.fs(Integer.parseInt($NUMBER.text)); } | 
-	F NUMBER |
+	F NUMBER { engine.f($NUMBER.text); } |
 	I NUMBER { engine.i(false); } | 
 	I { engine.i(true); } |
 	B { engine.b(true); } |

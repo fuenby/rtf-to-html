@@ -19,6 +19,7 @@ public class Engine {
 		int fontSize = 12;
 		boolean italic = false;
 		boolean bold = false;
+		Font font;
 
 		public State() {
 		}
@@ -32,14 +33,27 @@ public class Engine {
 		public State setBold(boolean state) { bold = state; return this; }
 		public boolean isBold() { return bold; }
 
+		public State setFont(Font font) { this.font = font; return this; }
+		public Font getFont() { return font; }
+
 		public State clone() {
 			State result = new State();
 			result.setFontSize(getFontSize());
 			result.setItalic(isItalic());
 			result.setBold(isBold());
+			result.setFont(getFont());
 
 			return result;
 		}
+	}
+
+	public static class ParaState {
+		public enum Align { LEFT, RIGHT, JUSTIFY, CENTER };
+
+		private Align align = Align.LEFT;
+
+		public Align getAlign() { return align; }
+		public ParaState setAlign(Align align) { this.align = align; return this; }
 	}
 
 	public static class Font {
@@ -56,13 +70,16 @@ public class Engine {
 	private Stack<State> stateStack = new Stack<State>();
 	private ProgramState programState = new ProgramState();
 	private Hashtable<String, Font> fonts = new Hashtable<String, Font>();
+	private State defaultState = new State();
+	private String defFontNumber = "";
+	private ParaState paraState = new ParaState();
 
 	public Engine() {
 	}
 
 
 	public void start() {
-		stateStack.push(new State());
+		stateStack.push(getDefState());
 	}
 	
 	public void end() {}
@@ -81,18 +98,33 @@ public class Engine {
 	
 	public void endbody() {}
 
+	public void qc() { // TODO:
+		getParaState().setAlign(ParaState.Align.CENTER);
+		updateParaState();
+	}
+
 	public void font(String number, Font font) {
 		fonts.put(number, font);
+		if (defFontNumber.equals(number)) {
+			getDefState().setFont(font);
+		}
+
 		System.err.println("Font " + number + ": " + font.getFontName());
 	}
 
 	public void text(String text) {
 		outText(decode(text));
 	}
+
+	public void charCode(int code) {
+		outText(codePage.decode(ByteBuffer.wrap(new byte[] { (byte) code })).toString());
+	}
 	
 	public void par() { outText("\n"); }
 	
-	public void pard() {}
+	public void pard() {
+		setParaState(new ParaState());
+	}
 	
 	public void rquote() {
 		outText("'");
@@ -112,6 +144,11 @@ public class Engine {
 			setFontSize(ptSize);
 			updateState();
 		}	
+	}
+
+	public void f(String fontNumber) {
+		getState().setFont(fonts.get(fontNumber));
+		updateState();
 	}
 
 	public void i(boolean state) {
@@ -144,12 +181,29 @@ public class Engine {
 		}
 	}
 
+	public void deff(String number) {
+		defFontNumber = number;
+	}
+
 	public void setFontSize(int fontSize) {
 		getState().setFontSize(fontSize);
 	}
 
 	public State getState() {
 		return stateStack.peek();
+	}
+
+	public State getDefState() {
+		return defaultState;
+	}
+
+	public ParaState getParaState() {
+		return paraState;
+	}
+
+	public Engine setParaState(ParaState paraState) {
+		this.paraState = paraState;
+		return this;
 	}
 
 	public ProgramState getProgramState() {
@@ -165,6 +219,8 @@ public class Engine {
 	}
 
 	public void updateState() {}
+
+	public void updateParaState() {}
 
 	public void outText(String text) {
 		System.out.print(text);

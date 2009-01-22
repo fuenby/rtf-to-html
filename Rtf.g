@@ -45,6 +45,7 @@ word: (
 	PLAIN |
 	PNSTART |
 	RQUOTE |
+	QC |
 	UC 
 	//VIEWKIND
 	) NUMBER? | fontfamily ;
@@ -136,6 +137,7 @@ STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
 LINE: '\\line' { afterControl = true; } ;
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
+QC: '\\qc' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 
 

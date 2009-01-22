@@ -98,13 +98,13 @@ public class DomEngine extends Engine {
 			StringBuilder bodyStyle = new StringBuilder();
 			bodyStyle.append("html { font-size: 12pt; width: ");
 			bodyStyle.append(getProgramState().getPaperWidth() / 20);
-			bodyStyle.append("pt; margin: 0 auto; }\n");
+			bodyStyle.append("pt; margin: 0 auto; padding: 0; background-color: lightgrey; }\n");
 			bodyStyle.append("body { padding-left: ");
 			bodyStyle.append(getProgramState().getLeftMargin() / 20);
 			bodyStyle.append("pt; padding-right: ");
 			bodyStyle.append(getProgramState().getRightMargin() / 20);
-			bodyStyle.append("pt; }\n");
-			bodyStyle.append("p { margin: 0 auto; text-indent: 36pt; background-color: yellow; }\n");
+			bodyStyle.append("pt; margin: 0 auto; background-color: white; }\n");
+			bodyStyle.append("p { margin: 0 auto; text-indent: 36pt; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(styleNode);
@@ -125,10 +125,16 @@ public class DomEngine extends Engine {
 		getCurrentTarget().appendChild(document.createTextNode(decode(text)));
 	}
 
-	public void rquote() {
-		ensurePara();
+	public void endash() {
+		outText("\u2013");
+	}
 
-		getCurrentTarget().appendChild(document.createEntityReference("rsquo"));
+	public void emdash() {
+		outText("\u2014");
+	}
+
+	public void rquote() {
+		outText("\u2019");
 	}
 
 	public void par() {

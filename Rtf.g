@@ -62,7 +62,7 @@ compound:
 	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? ;
 	
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
-fontinfo: F fn=NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | TEXT)* -> ^(F $fn TEXT);
+fontinfo: F fn=NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | text)* -> ^(F $fn text);
 
 colortbl: COLORTBL^ ((RED NUMBER)? (GREEN NUMBER)? (BLUE NUMBER)? TEXT)* ;
 
@@ -143,7 +143,7 @@ FI: '\\fi' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 
 
-CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; System.err.println("Ignoring " + getText()); } ;
+CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; /* System.err.println("Ignoring " + getText()); */ } ;
 
 NUMBER: {afterControl}? => '-'? '0'..'9'+ ;
 WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;

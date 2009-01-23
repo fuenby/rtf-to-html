@@ -29,7 +29,12 @@ hword:
 hentity: hword | ^((COLORTBL | STYLESHEET | INFO | GENERATOR) entity*) | fonttbl ;
 
 fonttbl: ^(FONTTBL fontdesc*) ;
-fontdesc: ^(F NUMBER TEXT) { engine.font($NUMBER.text, new Engine.Font($TEXT.text.substring(0, $TEXT.text.length() - 1))); } ;
+fontdesc: ^(F NUMBER text) { engine.font($NUMBER.text, new Engine.Font($text.value.substring(0, $text.value.length() - 1))); } ;
+text returns [String value] : { 
+	StringBuffer result = new StringBuffer(); }
+	(a=(TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE) {
+	result.append($a.text); })+ {
+	$value = result.toString(); } ;
 
 header: hentity* ;
 

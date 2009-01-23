@@ -119,7 +119,7 @@ public class Engine {
 			getDefState().setFont(font);
 		}
 
-		System.err.println("Font " + number + ": " + font.getFontName());
+		// System.err.println("Font " + number + ": " + font.getFontName());
 	}
 
 	public void text(String text) {

@@ -51,6 +51,12 @@ class ParaStyle {
 			case CENTER:
 				result.append("text-align: center;");
 				break;
+			case JUSTIFY:
+				result.append("text-align: justify;");
+				break;
+			case RIGHT:
+				result.append("text-align: right;");
+				break;
 		}
 
 		if (state.getFirstLineIndent() != 720) {

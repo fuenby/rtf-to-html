@@ -46,6 +46,7 @@ word: (
 	PNSTART |
 	RQUOTE |
 	QC |
+	QJ |
 	FI |
 	UC 
 	//VIEWKIND
@@ -139,6 +140,7 @@ UC: '\\uc' { afterControl = true; } ;
 LINE: '\\line' { afterControl = true; } ;
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
 QC: '\\qc' { afterControl = true; } ;
+QJ: '\\qj' { afterControl = true; } ;
 FI: '\\fi' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 

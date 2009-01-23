@@ -108,7 +108,12 @@ public class Engine {
 	
 	public void endbody() {}
 
-	public void qc() { // TODO:
+	public void qj() {
+		getParaState().setAlign(ParaState.Align.JUSTIFY);
+		updateParaState();
+	}
+
+	public void qc() {
 		getParaState().setAlign(ParaState.Align.CENTER);
 		updateParaState();
 	}

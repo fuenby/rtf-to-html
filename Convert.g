@@ -47,6 +47,7 @@ bstart:
 		engine.charCode(code); 
 		} |
 	QC { engine.qc(); } |
+	QJ { engine.qj(); } |
 	BULLET { engine.outText("\u2022"); } |
 	SLASH { engine.outText("\\"); } | 
 	OPENBRACE { engine.outText("{"); } | 

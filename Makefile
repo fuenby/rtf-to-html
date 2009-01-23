@@ -16,4 +16,8 @@ Convert.java: Convert.g
 
 run: all
 	java Main test.rtf > out.html 
-# 2> err.txt
+
+clean:
+	/bin/rm -f *.class
+	/bin/rm -f Convert.java
+	/bin/rm -f Rtf*.java

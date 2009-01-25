@@ -3,6 +3,7 @@ SUFFIXES=.java .class .g
 all: Engine.class DomEngine.class RtfLexer.class RtfParser.class Convert.class Main.class
 	mkdir -p out
 	jar cvfm out/Rtf2Htm.jar manifest.txt *.class 
+	cp out/Rtf2Htm.jar /bin
 
 %.class: %.java
 	javac $<
@@ -16,7 +17,7 @@ Convert.java: Convert.g
 	java org.antlr.Tool $<
 
 run: all
-	java Main test.rtf > out.html 
+	java Main README.rtf > README.html 
 
 clean:
 	/bin/rm -f *.class

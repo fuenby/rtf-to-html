@@ -102,15 +102,16 @@ public class DomEngine extends Engine {
 			styleNode.setAttribute("type", "text/css");
 
 			StringBuilder bodyStyle = new StringBuilder();
+			bodyStyle.append("* { margin: 0; padding: 0; }\n");
 			bodyStyle.append("html { font-size: 12pt; width: ");
 			bodyStyle.append(getProgramState().getPaperWidth() / 20);
-			bodyStyle.append("pt; margin: 0 auto; padding: 0; background-color: lightgrey; }\n");
+			bodyStyle.append("pt; margin: 0 auto; background-color: lightgrey; }\n");
 			bodyStyle.append("body { padding-left: ");
 			bodyStyle.append(getProgramState().getLeftMargin() / 20);
 			bodyStyle.append("pt; padding-right: ");
 			bodyStyle.append(getProgramState().getRightMargin() / 20);
-			bodyStyle.append("pt; margin: 0 auto; background-color: white; }\n");
-			bodyStyle.append("p { margin: 0 auto; text-indent: 36pt; }\n");
+			bodyStyle.append("pt; background-color: white; }\n");
+			bodyStyle.append("p { text-indent: 36pt; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(styleNode);

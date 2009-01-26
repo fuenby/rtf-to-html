@@ -5,8 +5,6 @@ options {
 }
 tokens {
 	TREE;
-	BODY;
-	HEADER;
 }
 
 @lexer::members {
@@ -61,7 +59,8 @@ compound:
 	AUTHOR^ TEXT |
 	OPERATOR^ TEXT |
 	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
-	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? ;
+	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
+	HEADER^ entity* ;
 	
 fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
 fontinfo: F fn=NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | text)* -> ^(F $fn text);
@@ -121,6 +120,7 @@ FSWISS: '\\fswiss' { afterControl = true; } ;
 FTECH: '\\ftech' { afterControl = true; } ;
 GENERATOR: '\\generator' { afterControl = true; } ;
 GREEN: '\\green' { afterControl = true; } ;
+HEADER: '\\header' { afterControl = true; } ;
 HR: '\\hr' { afterControl = true; } ;
 I: '\\i' { afterControl = true; } ;
 INFO: '\\info' { afterControl = true; } ;

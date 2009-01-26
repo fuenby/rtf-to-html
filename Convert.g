@@ -30,7 +30,7 @@ hword:
 	DEFLANGFE NUMBER |
 	DEFTAB NUMBER |
 	UC NUMBER ;
-hentity: hword | ^((STYLESHEET | INFO | GENERATOR) entity*) | fonttbl | colortbl ;
+hentity: hword | ^((STYLESHEET | INFO | GENERATOR | HEADER) entity*) | fonttbl | colortbl ;
 
 fonttbl: ^(FONTTBL fontdesc*) ;
 fontdesc: ^(F NUMBER text) { engine.font($NUMBER.text, new Engine.Font($text.value.substring(0, $text.value.length() - 1))); } ;

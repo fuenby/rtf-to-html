@@ -12,19 +12,21 @@ import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 
 class StateStyle {
 	Engine.State state;
+	Engine.State defState;
 	
-	public StateStyle(Engine.State state) {
+	public StateStyle(Engine.State state, Engine.State defState) {
 		this.state = state;
+		this.defState = defState;
 	}
 
 	public String toString() {
-		return toString(state);
+		return toString(state, defState);
 	}
 
-	public static String toString(Engine.State state) {
+	public static String toString(Engine.State state, Engine.State defState) {
 		StringBuilder result = new StringBuilder();
 
-		if (state.getFontSize() != 12) {
+		if (state.getFontSize() != defState.getFontSize()) {
 			result.append("font-size: ");
 			result.append(state.getFontSize());
 			result.append("pt;");
@@ -42,7 +44,7 @@ class StateStyle {
 			result.append("font-family: " + state.getFont().getFontName() + ";");
 		}
 
-		if (!state.getForeColor().equals(Color.BLACK)) {
+		if (!state.getForeColor().equals(defState.getForeColor())) {
 			result.append("color: #" + colorString(state.getForeColor()) + ";");
 		}
 
@@ -55,7 +57,7 @@ class StateStyle {
 }
 
 class ParaStyle {
-	public static String toString(Engine.ParaState state) {
+	public static String toString(Engine.ParaState state, Engine.ParaState defParaState) {
 		StringBuilder result = new StringBuilder();
 
 		switch (state.getAlign()) {
@@ -70,9 +72,15 @@ class ParaStyle {
 				break;
 		}
 
-		if (state.getFirstLineIndent() != 720) {
+		if (state.getFirstLineIndent() != defParaState.getFirstLineIndent()) {
 			result.append("text-indent: ");
 			result.append(state.getFirstLineIndent() / 20);
+			result.append("pt;");
+		}
+
+		if (state.getLeftIndent() != defParaState.getLeftIndent()) {
+			result.append("padding-left: ");
+			result.append(state.getLeftIndent() / 20);
 			result.append("pt;");
 		}
 
@@ -114,15 +122,26 @@ public class DomEngine extends Engine {
 
 			StringBuilder bodyStyle = new StringBuilder();
 			bodyStyle.append("* { margin: 0; padding: 0; }\n");
-			bodyStyle.append("html { font-size: 12pt; width: ");
+			bodyStyle.append("html { width: ");
 			bodyStyle.append(getProgramState().getPaperWidth() / 20);
-			bodyStyle.append("pt; margin: 0 auto; background-color: lightgrey; }\n");
+			bodyStyle.append("pt; margin: 0 auto; background-color: lightgrey;");
+			bodyStyle.append(" }\n");
+
 			bodyStyle.append("body { padding-left: ");
 			bodyStyle.append(getProgramState().getLeftMargin() / 20);
 			bodyStyle.append("pt; padding-right: ");
 			bodyStyle.append(getProgramState().getRightMargin() / 20);
-			bodyStyle.append("pt; background-color: white; }\n");
-			bodyStyle.append("p { text-indent: 36pt; }\n");
+			bodyStyle.append("pt; background-color: white;");
+			bodyStyle.append("font-size: ");
+			bodyStyle.append(getDefState().getFontSize());
+			bodyStyle.append("pt;");
+			bodyStyle.append(" }\n");
+
+			bodyStyle.append("p { ");
+			bodyStyle.append("text-indent: ");
+			bodyStyle.append(getDefParaState().getFirstLineIndent() / 20);
+			bodyStyle.append("pt;");
+			bodyStyle.append(" }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(styleNode);
@@ -214,19 +233,13 @@ public class DomEngine extends Engine {
 	}
 
 	public void updateTarget() {
-		String style = StateStyle.toString(getState());
+		String style = StateStyle.toString(getState(), getDefState());
 
 		if (getCurrentTarget() != null) {
 			Element currentTarget = getCurrentTarget();
 			if (currentTarget.getTagName().equals("span") && currentTarget.getFirstChild() == null) {
 				Node para = currentTarget.getParentNode();
 				para.removeChild(currentTarget);
-
-				/*
-				if (para.getFirstChild() == null) {
-					para.appendChild(document.createTextNode("\u00a0"));
-				}
-				*/
 			}
 		}
 
@@ -252,7 +265,7 @@ public class DomEngine extends Engine {
 	public void updateParaState() {
 		ensurePara();
 
-		String style = ParaStyle.toString(getParaState());
+		String style = ParaStyle.toString(getParaState(), getDefParaState());
 		if (style.length() > 0) {
 			getCurrentPara().setAttribute("style", style);
 		}

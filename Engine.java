@@ -56,6 +56,7 @@ public class Engine {
 			result.setItalic(isItalic());
 			result.setBold(isBold());
 			result.setFont(getFont());
+			result.setForeColor(getForeColor());
 
 			return result;
 		}
@@ -66,12 +67,16 @@ public class Engine {
 
 		private Align align = Align.LEFT;
 		private int firstLineIndent = 0;
+		private int leftIndent = 0;
 
 		public Align getAlign() { return align; }
 		public ParaState setAlign(Align align) { this.align = align; return this; }
 
 		public int getFirstLineIndent() { return firstLineIndent; }
 		public ParaState setFirstLineIndent(int firstLineIndent) { this.firstLineIndent = firstLineIndent; return this; }
+
+		public int getLeftIndent() { return leftIndent; }
+		public ParaState setLeftIndent(int leftIndent) { this.leftIndent = leftIndent; return this; }
 	}
 
 	public static class Font {
@@ -89,6 +94,7 @@ public class Engine {
 	private ProgramState programState = new ProgramState();
 	private Hashtable<String, Font> fonts = new Hashtable<String, Font>();
 	private State defaultState = new State();
+	private ParaState defaultParaState = new ParaState();
 	private String defFontNumber = "";
 	private ParaState paraState = new ParaState();
 	private List<Color> colors = new ArrayList<Color>();
@@ -98,7 +104,6 @@ public class Engine {
 
 
 	public void start() {
-		stateStack.push(getDefState());
 	}
 	
 	public void end() {}
@@ -113,7 +118,9 @@ public class Engine {
 		updateState();
 	}
 
-	public void body() {}
+	public void body() {
+		stateStack.push(getDefState().clone());
+	}
 	
 	public void endbody() {}
 
@@ -158,6 +165,11 @@ public class Engine {
 
 	public void emdash() {
 		outText("---");
+	}
+
+	public void li(int leftIndent) {
+		getParaState().setLeftIndent(leftIndent);
+		updateParaState();
 	}
 
 	public void fi(int firstLineIndent) {
@@ -208,6 +220,16 @@ public class Engine {
 		updateState();
 	}
 
+	public void mac() {
+		String codepageName = "MacRoman";
+		try {
+			Charset newCharset = Charset.forName(codepageName);
+			codePage = newCharset;
+		} catch (Exception ex) {
+			System.err.println("Cannot get decoder for " + codepageName);
+		}
+	}
+
 	public void ansicpg(int codepage) {
 		String codepageName = "windows-" + Integer.toString(codepage);
 		try {
@@ -236,6 +258,10 @@ public class Engine {
 
 	public ParaState getParaState() {
 		return paraState;
+	}
+
+	public ParaState getDefParaState() {
+		return defaultParaState;
 	}
 
 	public Engine setParaState(ParaState paraState) {

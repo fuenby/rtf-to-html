@@ -26,6 +26,7 @@ hword:
 	DEFF NUMBER { engine.deff($NUMBER.text); } |
 	ANSI |
 	ANSICPG NUMBER { engine.ansicpg(Integer.parseInt($NUMBER.text)); } |
+	MAC { engine.mac(); } |
 	DEFLANG NUMBER |
 	DEFLANGFE NUMBER |
 	DEFTAB NUMBER |
@@ -62,6 +63,7 @@ bstart:
 		} |
 	QC { engine.qc(); } |
 	QJ { engine.qj(); } |
+	LI NUMBER { engine.li(Integer.parseInt($NUMBER.text)); } |
 	CF NUMBER { engine.cf(Integer.parseInt($NUMBER.text)); } |
 	BULLET { engine.outText("\u2022"); } |
 	SLASH { engine.outText("\\"); } | 

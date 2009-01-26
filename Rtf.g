@@ -23,7 +23,9 @@ entity:
 text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE)+ ;
 
 word: (
+	MAC |
 	ANSI |
+	LI |
 	LINE |
 	ANSICPG |
 	B |
@@ -125,6 +127,8 @@ HR: '\\hr' { afterControl = true; } ;
 I: '\\i' { afterControl = true; } ;
 INFO: '\\info' { afterControl = true; } ;
 LANG: '\\lang' { afterControl = true; } ;
+LI: '\\li' { afterControl = true; } ;
+
 LINE: '\\line' { afterControl = true; } ;
 MIN: '\\min' { afterControl = true; } ;
 MO: '\\mo' { afterControl = true; } ;
@@ -143,6 +147,7 @@ SEC: '\\sec' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
+MAC: '\\mac' { afterControl = true; } ;
 
 
 CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; /* System.err.println("Ignoring " + getText()); */ } ;

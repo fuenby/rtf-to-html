@@ -189,6 +189,12 @@ public class DomEngine extends Engine {
 		super.end();
 	}
 
+	public void title(String title) {
+		Element titleNode = document.createElement("title");
+		titleNode.appendChild(document.createTextNode(title));
+		getHead().appendChild(titleNode);
+	}
+
 	public void line() {
 		getCurrentTarget().appendChild(document.createElement("br"));
 	}

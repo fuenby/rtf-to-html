@@ -57,8 +57,8 @@ fontfamily: FNIL | FROMAN | FSWISS | FMODERN | FSCRIPT | FDECOR | FTECH | FBIDI 
 compound: 
 	// RTF^ NUMBER entity* |
 	fonttbl | colortbl | stylesheet | info |
-	//(COLORTBL | INFO | STYLESHEET)^ entity* |
 	AUTHOR^ TEXT |
+	TITLE^ TEXT |
 	OPERATOR^ TEXT |
 	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
 	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
@@ -88,6 +88,7 @@ NBSP: '\\~' ;
 OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
+TITLE: '\\title' { afterControl = true; } ;
 ANSI: '\\ansi' { afterControl = true; } ;
 ANSICPG: '\\ansicpg' { afterControl = true; } ;
 AUTHOR: '\\author' { afterControl = true; } ;
@@ -150,7 +151,7 @@ YR: '\\yr' { afterControl = true; } ;
 MAC: '\\mac' { afterControl = true; } ;
 
 
-CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; /* System.err.println("Ignoring " + getText()); */ } ;
+CONTROL: '\\' ('a'..'z' | 'A'..'Z')+ { afterControl = true; } ;
 
 NUMBER: {afterControl}? => '-'? '0'..'9'+ ;
 WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;

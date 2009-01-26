@@ -124,6 +124,11 @@ public class Engine {
 	
 	public void endbody() {}
 
+	public void title(String title) {
+		System.out.println(title);
+		System.out.println();
+	}
+
 	public void qj() {
 		getParaState().setAlign(ParaState.Align.JUSTIFY);
 		updateParaState();

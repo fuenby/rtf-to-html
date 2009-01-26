@@ -101,13 +101,17 @@ public class DomEngine extends Engine {
 	Element currentTarget;
 
 	public DomEngine() throws Exception {
+		// document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		document = DOMImplementationRegistry.newInstance().getDOMImplementation("XML 1.0").createDocument("http://www.w3.org/1999/xhtml", "html", null);
 		if (document == null) {
 			System.err.println("Couldn't find suitable DOM implementation!");
 			throw new RuntimeException();
 		}
 
-		htmlNode = document.getDocumentElement(); // .createElement("html");
+		// htmlNode = document.createElement("html");
+		// document.appendChild(getHtml());
+		htmlNode = document.getDocumentElement();
+
 		headNode = document.createElement("head");
 		bodyNode = document.createElement("body");
 
@@ -163,7 +167,10 @@ public class DomEngine extends Engine {
 					if (classes.containsKey(style)) {
 						className = classes.get(style);
 					} else {
-						className = "c" + Integer.toString(nextClass++);
+						StringBuffer buf = new StringBuffer();
+						buf.append("c");
+						buf.append(nextClass++);
+						className = buf.toString();
 						classes.put(style, className);
 					}
 

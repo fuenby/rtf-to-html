@@ -221,9 +221,12 @@ public class DomEngine extends Engine {
 			if (currentTarget.getTagName().equals("span") && currentTarget.getFirstChild() == null) {
 				Node para = currentTarget.getParentNode();
 				para.removeChild(currentTarget);
+
+				/*
 				if (para.getFirstChild() == null) {
 					para.appendChild(document.createTextNode("\u00a0"));
 				}
+				*/
 			}
 		}
 

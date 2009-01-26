@@ -1,4 +1,7 @@
+import java.awt.Color;
+import java.util.Hashtable;
 import java.util.Stack;
+import java.util.Enumeration;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
@@ -39,7 +42,15 @@ class StateStyle {
 			result.append("font-family: " + state.getFont().getFontName() + ";");
 		}
 
+		if (!state.getForeColor().equals(Color.BLACK)) {
+			result.append("color: #" + colorString(state.getForeColor()) + ";");
+		}
+
 		return result.toString();
+	}
+
+	static String colorString(Color color) {
+		return String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
 }
 
@@ -115,6 +126,43 @@ public class DomEngine extends Engine {
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(styleNode);
+
+			// Transform inline styles to classes
+			Hashtable<String, String> classes = new Hashtable<String, String>();
+
+			NodeList spans = document.getElementsByTagName("span");
+			int nextClass = 0;
+
+			for (int i = 0; i < spans.getLength(); ++i) {
+				Element span = (Element) spans.item(i);
+				String style = span.getAttribute("style");
+
+				if (style.length() > 0) {
+					span.removeAttribute("style");
+
+					String className;
+					if (classes.containsKey(style)) {
+						className = classes.get(style);
+					} else {
+						className = "c" + Integer.toString(nextClass++);
+						classes.put(style, className);
+					}
+
+					span.setAttribute("class", className);
+				}
+			}
+
+			for (Enumeration<String> keys = classes.keys(); keys.hasMoreElements();) {
+				String style = keys.nextElement();
+				String className = classes.get(style);
+				StringBuilder styleText = new StringBuilder();
+				styleText.append(".");
+				styleText.append(className);
+				styleText.append(" { ");
+				styleText.append(style);
+				styleText.append(" }\n");
+				styleNode.appendChild(document.createTextNode(styleText.toString()));
+			}
 
 			TransformerFactory.newInstance().newTransformer().transform(new DOMSource(document), new StreamResult(System.out));
 		} catch(Exception e) {}

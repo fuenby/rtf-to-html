@@ -47,6 +47,7 @@ word: (
 	RQUOTE |
 	QC |
 	QJ |
+	CF |
 	FI |
 	UC 
 	//VIEWKIND
@@ -85,13 +86,14 @@ CLOSEBRACE: '\\}' ;
 NBSP: '\\~' ;
 OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
-
-
+//VIEWKIND: '\\viewkind' { afterControl = true; } ;
 ANSI: '\\ansi' { afterControl = true; } ;
 ANSICPG: '\\ansicpg' { afterControl = true; } ;
 AUTHOR: '\\author' { afterControl = true; } ;
 B: '\\b' { afterControl = true; } ;
+BLUE: '\\blue' { afterControl = true; } ;
 BULLET: '\\bullet' { afterControl = true; } ;
+CF: '\\cf' { afterControl = true; } ;
 COLORTBL: '\\colortbl' { afterControl = true; } ;
 CREATIM: '\\creatim' { afterControl = true; } ;
 DEFF: '\\deff' { afterControl = true; } ;
@@ -106,6 +108,7 @@ FALT: '\\falt' { afterControl = true; } ;
 FBIDI: '\\fbidi' { afterControl = true; } ;
 FCHARSET: '\\fcharset' { afterControl = true; } ;
 FDECOR: '\\fdecor' { afterControl = true; } ;
+FI: '\\fi' { afterControl = true; } ;
 FMODERN: '\\fmodern' { afterControl = true; } ;
 FNAME: '\\fname' { afterControl = true; } ;
 FNIL: '\\fnil' { afterControl = true; } ;
@@ -117,10 +120,12 @@ FSCRIPT: '\\fscript' { afterControl = true; } ;
 FSWISS: '\\fswiss' { afterControl = true; } ;
 FTECH: '\\ftech' { afterControl = true; } ;
 GENERATOR: '\\generator' { afterControl = true; } ;
+GREEN: '\\green' { afterControl = true; } ;
 HR: '\\hr' { afterControl = true; } ;
 I: '\\i' { afterControl = true; } ;
 INFO: '\\info' { afterControl = true; } ;
 LANG: '\\lang' { afterControl = true; } ;
+LINE: '\\line' { afterControl = true; } ;
 MIN: '\\min' { afterControl = true; } ;
 MO: '\\mo' { afterControl = true; } ;
 OPERATOR: '\\operator' { afterControl = true; } ;
@@ -128,20 +133,15 @@ PAR: ('\\par' | '\\\n' | '\\\r') { afterControl = true; } ;
 PARD: '\\pard' { afterControl = true; } ;
 PLAIN: '\\plain' { afterControl = true; } ;
 PNSTART: '\\pnstart' { afterControl = true; } ;
+QC: '\\qc' { afterControl = true; } ;
+QJ: '\\qj' { afterControl = true; } ;
+RED: '\\red' { afterControl = true; } ;
 REVTIM: '\\revtim' { afterControl = true; } ;
 RQUOTE: '\\rquote' { afterControl = true; } ;
-RED: '\\red' { afterControl = true; } ;
-GREEN: '\\green' { afterControl = true; } ;
-BLUE: '\\blue' { afterControl = true; } ;
 RTF: '\\rtf' { afterControl = true; } ;
 SEC: '\\sec' { afterControl = true; } ;
 STYLESHEET: '\\stylesheet' { afterControl = true; } ;
 UC: '\\uc' { afterControl = true; } ;
-LINE: '\\line' { afterControl = true; } ;
-//VIEWKIND: '\\viewkind' { afterControl = true; } ;
-QC: '\\qc' { afterControl = true; } ;
-QJ: '\\qj' { afterControl = true; } ;
-FI: '\\fi' { afterControl = true; } ;
 YR: '\\yr' { afterControl = true; } ;
 
 

@@ -2,6 +2,9 @@ import java.util.Hashtable;
 import java.util.Stack;
 import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
+import java.awt.Color;
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class Engine {
@@ -26,6 +29,8 @@ public class Engine {
 		boolean italic = false;
 		boolean bold = false;
 		Font font;
+		Color foreColor = Color.BLACK;
+		Color backColor = Color.WHITE;
 
 		public State() {
 		}
@@ -41,6 +46,9 @@ public class Engine {
 
 		public State setFont(Font font) { this.font = font; return this; }
 		public Font getFont() { return font; }
+
+		public State setForeColor(Color color) { this.foreColor = color; return this; }
+		public Color getForeColor() { return foreColor; }
 
 		public State clone() {
 			State result = new State();
@@ -83,6 +91,7 @@ public class Engine {
 	private State defaultState = new State();
 	private String defFontNumber = "";
 	private ParaState paraState = new ParaState();
+	private List<Color> colors = new ArrayList<Color>();
 
 	public Engine() {
 	}
@@ -123,8 +132,6 @@ public class Engine {
 		if (defFontNumber.equals(number)) {
 			getDefState().setFont(font);
 		}
-
-		// System.err.println("Font " + number + ": " + font.getFontName());
 	}
 
 	public void text(String text) {
@@ -192,6 +199,15 @@ public class Engine {
 		System.out.println();
 	}
 
+	public void color(Color color) {
+		getColors().add(color);
+	}
+
+	public void cf(int colorNum) {
+		getState().setForeColor(getColors().get(colorNum));
+		updateState();
+	}
+
 	public void ansicpg(int codepage) {
 		String codepageName = "windows-" + Integer.toString(codepage);
 		try {
@@ -233,6 +249,10 @@ public class Engine {
 
 	public int getFontSize() {
 		return getState().getFontSize();
+	}
+
+	public List<Color> getColors() {
+		return colors;
 	}
 
 	public String decode(String text) {

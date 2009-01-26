@@ -5,6 +5,10 @@ options {
 	ASTLabelType=CommonTree;
 }
 
+@header {
+	import java.awt.Color;
+}
+
 @members {
 	Engine engine;
 
@@ -26,10 +30,20 @@ hword:
 	DEFLANGFE NUMBER |
 	DEFTAB NUMBER |
 	UC NUMBER ;
-hentity: hword | ^((COLORTBL | STYLESHEET | INFO | GENERATOR) entity*) | fonttbl ;
+hentity: hword | ^((STYLESHEET | INFO | GENERATOR) entity*) | fonttbl | colortbl ;
 
 fonttbl: ^(FONTTBL fontdesc*) ;
 fontdesc: ^(F NUMBER text) { engine.font($NUMBER.text, new Engine.Font($text.value.substring(0, $text.value.length() - 1))); } ;
+
+colortbl: ^(COLORTBL {
+	int red = 0, green = 0, blue = 0;
+}
+((RED r=NUMBER { red = Integer.parseInt($r.text); } )?
+ (GREEN g=NUMBER { green = Integer.parseInt($g.text); } )?
+ (BLUE b=NUMBER { blue = Integer.parseInt($b.text); } )? TEXT {
+	 engine.color(new Color(red, green, blue));
+} )+) ;
+
 text returns [String value] : { 
 	StringBuffer result = new StringBuffer(); }
 	(a=(TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE) {
@@ -48,6 +62,7 @@ bstart:
 		} |
 	QC { engine.qc(); } |
 	QJ { engine.qj(); } |
+	CF NUMBER { engine.cf(Integer.parseInt($NUMBER.text)); } |
 	BULLET { engine.outText("\u2022"); } |
 	SLASH { engine.outText("\\"); } | 
 	OPENBRACE { engine.outText("{"); } | 

@@ -65,7 +65,7 @@ public class Engine {
 		public enum Align { LEFT, RIGHT, JUSTIFY, CENTER };
 
 		private Align align = Align.LEFT;
-		private int firstLineIndent = 720;
+		private int firstLineIndent = 0;
 
 		public Align getAlign() { return align; }
 		public ParaState setAlign(Align align) { this.align = align; return this; }

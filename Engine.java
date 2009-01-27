@@ -12,6 +12,7 @@ public class Engine {
 		private int paperWidth = 12240; // in twips (twentieths of points)
 		private int leftMargin = 1800;
 		private int rightMargin = 1800;
+		private int tabWidth = 720;
 
 		public ProgramState() {
 		}
@@ -22,6 +23,8 @@ public class Engine {
 		public int getLeftMargin() { return leftMargin; }
 
 		public int getRightMargin() { return rightMargin; }
+
+		public int getTabWidth() { return tabWidth; }
 	}
 
 	public class State {
@@ -247,6 +250,10 @@ public class Engine {
 
 	public void deff(String number) {
 		defFontNumber = number;
+	}
+
+	public void tab() {
+		outText("\t");
 	}
 
 	public void setFontSize(int fontSize) {

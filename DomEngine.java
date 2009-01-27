@@ -235,6 +235,14 @@ public class DomEngine extends Engine {
 		setCurrentPara(null);
 	}
 
+	public void tab() {
+		ensurePara();
+		Element span = document.createElement("span");
+		span.appendChild(document.createTextNode("\u00a0"));
+		span.setAttribute("style", "display: inline-block; width: " + (getProgramState().getTabWidth() / 20) + "pt;");
+		getCurrentTarget().appendChild(span);
+	}
+
 	public void ensurePara() {
 		if (getCurrentPara() == null) {
 			getBody().appendChild(document.createTextNode("\n"));

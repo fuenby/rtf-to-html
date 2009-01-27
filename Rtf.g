@@ -23,6 +23,7 @@ entity:
 text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE)+ ;
 
 word: (
+	TAB |
 	MAC |
 	ANSI |
 	LI |
@@ -89,6 +90,7 @@ OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'
 
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
 TITLE: '\\title' { afterControl = true; } ;
+TAB: '\\tab' { afterControl = true; } ;
 ANSI: '\\ansi' { afterControl = true; } ;
 ANSICPG: '\\ansicpg' { afterControl = true; } ;
 AUTHOR: '\\author' { afterControl = true; } ;

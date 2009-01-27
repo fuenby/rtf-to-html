@@ -57,6 +57,7 @@ header: hentity* ;
 
 bstart: 
 	TEXT { engine.text($TEXT.text); } | 
+	TAB { engine.tab(); } |
 	LINE { engine.line(); } | 
 	NBSP { engine.outText("\u00a0"); } | 
 	HEXCHAR {

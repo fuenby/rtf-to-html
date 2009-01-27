@@ -17,6 +17,7 @@ Convert.java: Convert.g
 	java org.antlr.Tool $<
 
 run: all
+	java RtfConvert --output txt README.rtf > README
 	java RtfConvert README.rtf > README.html 
 
 clean:

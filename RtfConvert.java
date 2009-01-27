@@ -3,19 +3,34 @@ import org.antlr.runtime.tree.*;
 import java.util.Hashtable;
 import java.util.Iterator;
 
-public class Main {
+public class RtfConvert {
 	public static void main(String args[]) throws Exception {
 		if (args.length == 0) {
-			System.err.println("Usage: RtfConvert <rtf file>");
+			System.err.println("Usage: RtfConvert [--output html|txt] <source.rtf>");
 			System.exit(-1);
 		}
 
-		RtfLexer lexer = new RtfLexer(new ANTLRFileStream(args[0]));
+		String sourceName;
+		Engine engine;
+		if (args[0].equals("--output")) {
+			if (args[1].equals("txt")) {
+				engine = new Engine();
+			} else if (args[1].equals("html")) {
+				engine = new DomEngine();
+			} else {
+				throw new RuntimeException("Wrong output format; has to be either txt or html.");
+			}
+			sourceName = args[2];
+		} else {
+			engine = new DomEngine();
+			sourceName = args[0];
+		}
+
+		RtfLexer lexer = new RtfLexer(new ANTLRFileStream(sourceName));
 		CommonTokenStream stream  = new CommonTokenStream(lexer);
 
 		RtfParser parser = new RtfParser(stream);
 		CommonTree tree = (CommonTree) parser.rtf().getTree();
-		Engine engine = new DomEngine();
 
 		CommonTreeNodeStream s = new CommonTreeNodeStream(tree);
 

@@ -6,7 +6,7 @@ import java.util.Iterator;
 public class Main {
 	public static void main(String args[]) throws Exception {
 		if (args.length == 0) {
-			System.err.println("Usage: test <rtf file>");
+			System.err.println("Usage: RtfConvert <rtf file>");
 			System.exit(-1);
 		}
 

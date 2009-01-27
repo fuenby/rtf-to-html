@@ -1,2 +1,2 @@
-Main-Class: Main
+Main-Class: RtfConvert
 Class-Path: antlr-3.1.1-runtime.jar

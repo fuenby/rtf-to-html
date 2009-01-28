@@ -24,6 +24,8 @@ text: (TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CL
 
 word: (
 	TAB |
+	LDBLQUOTE |
+	RDBLQUOTE |
 	MAC |
 	ANSI |
 	LI |
@@ -89,6 +91,8 @@ NBSP: '\\~' ;
 OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
+LDBLQUOTE: '\\ldblquote' { afterControl = true; } ;
+RDBLQUOTE: '\\rdblquote' { afterControl = true; } ;
 TITLE: '\\title' { afterControl = true; } ;
 TAB: '\\tab' { afterControl = true; } ;
 ANSI: '\\ansi' { afterControl = true; } ;

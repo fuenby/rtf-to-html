@@ -49,7 +49,7 @@ colortbl: ^(COLORTBL {
 
 text returns [String value] : { 
 	StringBuffer result = new StringBuffer(); }
-	(a=(TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE) {
+	(a=(TEXT | NBSP | HEXCHAR | EMDASH | ENDASH | BULLET | SLASH | OPENBRACE | CLOSEBRACE ) {
 	result.append($a.text); })+ {
 	$value = result.toString(); } ;
 
@@ -57,6 +57,8 @@ header: hentity* ;
 
 bstart: 
 	TEXT { engine.text($TEXT.text); } | 
+	LDBLQUOTE { engine.outText("\u201c"); } |
+	RDBLQUOTE { engine.outText("\u201d"); } |
 	TAB { engine.tab(); } |
 	LINE { engine.line(); } | 
 	NBSP { engine.outText("\u00a0"); } | 

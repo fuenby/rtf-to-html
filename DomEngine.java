@@ -100,6 +100,8 @@ public class DomEngine extends Engine {
 	Element currentPara;
 	Element currentTarget;
 
+	int nextClass = 0;
+
 	public DomEngine() throws Exception {
 		// document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		document = DOMImplementationRegistry.newInstance().getDOMImplementation("XML 1.0").createDocument("http://www.w3.org/1999/xhtml", "html", null);
@@ -154,28 +156,13 @@ public class DomEngine extends Engine {
 			Hashtable<String, String> classes = new Hashtable<String, String>();
 
 			NodeList spans = document.getElementsByTagName("span");
-			int nextClass = 0;
-
 			for (int i = 0; i < spans.getLength(); ++i) {
-				Element span = (Element) spans.item(i);
-				String style = span.getAttribute("style");
+				pullElementStyle((Element) spans.item(i), classes);
+			}
 
-				if (style.length() > 0) {
-					span.removeAttribute("style");
-
-					String className;
-					if (classes.containsKey(style)) {
-						className = classes.get(style);
-					} else {
-						StringBuffer buf = new StringBuffer();
-						buf.append("c");
-						buf.append(nextClass++);
-						className = buf.toString();
-						classes.put(style, className);
-					}
-
-					span.setAttribute("class", className);
-				}
+			NodeList paras = document.getElementsByTagName("p");
+			for (int i = 0; i < paras.getLength(); ++i) {
+				pullElementStyle((Element) paras.item(i), classes);
 			}
 
 			for (Enumeration<String> keys = classes.keys(); keys.hasMoreElements();) {
@@ -241,6 +228,27 @@ public class DomEngine extends Engine {
 		span.appendChild(document.createTextNode("\u00a0"));
 		span.setAttribute("style", "display: inline-block; width: " + (getProgramState().getTabWidth() / 20) + "pt;");
 		getCurrentTarget().appendChild(span);
+	}
+
+	private void pullElementStyle(Element element, Hashtable<String, String> classes) {
+		String style = element.getAttribute("style");
+
+		if (style.length() > 0) {
+			element.removeAttribute("style");
+
+			String className;
+			if (classes.containsKey(style)) {
+				className = classes.get(style);
+			} else {
+				StringBuffer buf = new StringBuffer();
+				buf.append("c");
+				buf.append(nextClass++);
+				className = buf.toString();
+				classes.put(style, className);
+			}
+
+			element.setAttribute("class", className);
+		}
 	}
 
 	public void ensurePara() {

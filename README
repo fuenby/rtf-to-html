@@ -1,4 +1,7 @@
 Rtf-to-html (for the lack of a better name) is a tool that converts Rich Text Format files to HTML documents. As the parser is created with ANTLR 3 <http://www.antlr.org>, you'll have to add it to your classpath. The final program will be dependent on the ANTLR runtime, so drop antlr-3.1.1-runtime.jar in the output directory as well (or any later version, but you'll have to change the manifest.) Then just run make, and it should compile on any Unix-like system.
-It's not half finished, but I'm hoping for full RTF 1.2 support someday (maybe without the Word-specific stuff.) 
+It's not half finished, but I'm hoping for full RTF 1.2 support someday (maybe without the Word-specific stuff.) The main things lacking right now are:
+·	proper tab support (right-, left-aligned and centered; not sure if it's even possible to realize in HTML,)
+·	styles,
+·	and images.
 
 

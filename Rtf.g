@@ -169,7 +169,7 @@ NUMBER: {afterControl}? => '-'? '0'..'9'+ ;
 WS: {afterControl}? => ' ' { skip(); afterControl = false; } ;
 NEWLINE: ('\n' | '\r') { skip(); afterControl = false; } ;
 
-fragment HEX: '0'..'9' | 'a'..'f' ;
+fragment HEX: '0'..'9' | 'a'..'f' | 'A'..'F' ;
 HEXCHAR: '\\' '\'' HEX HEX { afterControl = false; } ;
 
 TEXT: 

@@ -121,12 +121,21 @@ public class DomEngine extends Engine {
 		headNode = document.createElement("head");
 		bodyNode = document.createElement("body");
 
-		getHtml().appendChild(getHead());
-		getHtml().appendChild(getBody());
+		htmlNode.appendChild(document.createTextNode("\n"));
+		htmlNode.appendChild(getHead());
+		htmlNode.appendChild(document.createTextNode("\n"));
+		htmlNode.appendChild(getBody());
 	}
 	
 	public void end() {
 		try {
+			Element metaEncoding = document.createElement("meta");
+			metaEncoding.setAttribute("http-equiv", "Content-Type");
+			metaEncoding.setAttribute("content", "text/html; charset=utf-8");
+
+			getHead().appendChild(document.createTextNode("\n"));
+			getHead().appendChild(metaEncoding);
+
 			styleNode = document.createElement("style");
 			styleNode.setAttribute("type", "text/css");
 
@@ -157,6 +166,7 @@ public class DomEngine extends Engine {
 			bodyStyle.append("td { border: solid 1px black; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
+			getHead().appendChild(document.createTextNode("\n"));
 			getHead().appendChild(styleNode);
 
 			// Transform inline styles to classes

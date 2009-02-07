@@ -46,6 +46,9 @@ word: (
 	PAR |
 	PARD |
 	PLAIN |
+	CELL |
+	ROW |
+	INTBL |
 	PNSTART |
 	RQUOTE |
 	QC |
@@ -91,6 +94,9 @@ NBSP: '\\~' ;
 OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
+CELL: '\\cell' { afterControl = true; } ;
+ROW: '\\row' { afterControl = true; } ;
+INTBL: '\\intbl' { afterControl = true; } ;
 LDBLQUOTE: '\\ldblquote' { afterControl = true; } ;
 RDBLQUOTE: '\\rdblquote' { afterControl = true; } ;
 TITLE: '\\title' { afterControl = true; } ;

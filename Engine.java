@@ -71,6 +71,7 @@ public class Engine {
 		private Align align = Align.LEFT;
 		private int firstLineIndent = 0;
 		private int leftIndent = 0;
+		private boolean inTable = false;
 
 		public Align getAlign() { return align; }
 		public ParaState setAlign(Align align) { this.align = align; return this; }
@@ -80,6 +81,9 @@ public class Engine {
 
 		public int getLeftIndent() { return leftIndent; }
 		public ParaState setLeftIndent(int leftIndent) { this.leftIndent = leftIndent; return this; }
+
+		public ParaState setInTable(boolean inTable) { this.inTable = inTable; return this; }
+		public boolean isInTable() { return inTable; }
 	}
 
 	public static class Font {
@@ -157,7 +161,9 @@ public class Engine {
 		outText(codePage.decode(ByteBuffer.wrap(new byte[] { (byte) code })).toString());
 	}
 	
-	public void par() { outText("\n"); }
+	public void par() {
+		 outText("\n"); 
+	}
 	
 	public void pard() {
 		setParaState(new ParaState());
@@ -255,6 +261,17 @@ public class Engine {
 	public void tab() {
 		outText("\t");
 	}
+
+	public void intbl() {
+		getParaState().setInTable(true);
+	}
+
+	public void cell() {
+	}
+
+	public void row() {
+	}
+
 
 	public void setFontSize(int fontSize) {
 		getState().setFontSize(fontSize);

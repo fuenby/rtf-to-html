@@ -56,6 +56,9 @@ text returns [String value] : {
 header: hentity* ;
 
 bstart: 
+	INTBL { engine.intbl(); } |
+	CELL { engine.cell(); } |
+	ROW { engine.row(); } |
 	TEXT { engine.text($TEXT.text); } | 
 	LDBLQUOTE { engine.outText("\u201c"); } |
 	RDBLQUOTE { engine.outText("\u201d"); } |

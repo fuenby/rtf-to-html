@@ -100,6 +100,10 @@ public class DomEngine extends Engine {
 	Element currentPara;
 	Element currentTarget;
 
+	Element currentRow;
+	Element currentCell;
+	Element currentTable;
+
 	int nextClass = 0;
 
 	public DomEngine() throws Exception {
@@ -148,6 +152,9 @@ public class DomEngine extends Engine {
 			bodyStyle.append(getDefParaState().getFirstLineIndent() / 20);
 			bodyStyle.append("pt;");
 			bodyStyle.append(" }\n");
+
+			bodyStyle.append("table { border-collapse: collapse; }\n");
+			bodyStyle.append("td { border: solid 1px black; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(styleNode);
@@ -213,9 +220,12 @@ public class DomEngine extends Engine {
 
 	public void par() {
 		if (getCurrentPara() == null) {
-			Element para = document.createElement("p");
-			para.appendChild(document.createTextNode("\u00a0"));
-			getBody().appendChild(para);
+			addPara();
+			getCurrentPara().appendChild(document.createTextNode("\u00a0"));
+		}
+
+		if (!getParaState().isInTable()) {
+			setCurrentTable(null);
 		}
 
 		updateParaState();
@@ -228,6 +238,53 @@ public class DomEngine extends Engine {
 		span.appendChild(document.createTextNode("\u00a0"));
 		span.setAttribute("style", "display: inline-block; width: " + (getProgramState().getTabWidth() / 20) + "pt;");
 		getCurrentTarget().appendChild(span);
+	}
+
+	public void intbl() {
+		super.intbl();
+
+		ensurePara();
+		ensureCell();
+		getCurrentCell().appendChild(getCurrentPara());
+	}
+
+	public void cell() {
+		super.cell();
+		setCurrentPara(null);
+		setCurrentCell(null);
+	}
+
+	public void row() {
+		super.row();
+		setCurrentPara(null);
+		setCurrentCell(null);
+		setCurrentRow(null);
+	}
+
+	private void ensureCell() {
+		ensureRow();
+		if (getCurrentCell() == null) {
+			Element cell = document.createElement("td");
+			setCurrentCell(cell);
+			getCurrentRow().appendChild(cell);
+		}
+	}
+
+	private void ensureRow() {
+		ensureTable();
+		if (getCurrentRow() == null) {
+			Element row = document.createElement("tr");
+			setCurrentRow(row);
+			getCurrentTable().appendChild(row);
+		}
+	}
+
+	private void ensureTable() {
+		if (getCurrentTable() == null) {
+			Element table = document.createElement("table");
+			setCurrentTable(table);
+			getBody().appendChild(table);
+		}
 	}
 
 	private void pullElementStyle(Element element, Hashtable<String, String> classes) {
@@ -253,12 +310,21 @@ public class DomEngine extends Engine {
 
 	public void ensurePara() {
 		if (getCurrentPara() == null) {
-			getBody().appendChild(document.createTextNode("\n"));
-			setCurrentPara(document.createElement("p"));
-			getBody().appendChild(getCurrentPara());
+			addPara();
 
 			updateTarget();
 		}
+	}
+
+	public void addPara() {
+		Element para = document.createElement("p");
+		setCurrentPara(para);
+		Element container = getBody();
+		if (getCurrentCell() != null) {
+			container = getCurrentCell();
+		}
+		container.appendChild(document.createTextNode("\n"));
+		container.appendChild(para);
 	}
 
 	public void updateTarget() {
@@ -332,5 +398,29 @@ public class DomEngine extends Engine {
 
 	void setCurrentTarget(Element target) {
 		currentTarget = target;
+	}
+
+	Element getCurrentCell() {
+		return currentCell;
+	}
+
+	void setCurrentCell(Element cell) {
+		currentCell = cell;
+	}
+
+	Element getCurrentRow() {
+		return currentRow;
+	}
+
+	void setCurrentRow(Element row) {
+		currentRow = row;
+	}
+
+	Element getCurrentTable() {
+		return currentTable;
+	}
+
+	void setCurrentTable(Element table) {
+		currentTable = table;
 	}
 }

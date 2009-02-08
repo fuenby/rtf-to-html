@@ -162,8 +162,8 @@ public class DomEngine extends Engine {
 			bodyStyle.append("pt;");
 			bodyStyle.append(" }\n");
 
-			bodyStyle.append("table { border-collapse: collapse; }\n");
-			bodyStyle.append("td { border: solid 1px black; }\n");
+			bodyStyle.append("table { border-collapse: collapse; border-bottom: solid 1px black; }\n");
+			bodyStyle.append("td { border-left: solid 1px black; border-right: solid 1px black; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(document.createTextNode("\n"));
@@ -231,7 +231,6 @@ public class DomEngine extends Engine {
 	public void par() {
 		if (getCurrentPara() == null) {
 			addPara();
-			getCurrentPara().appendChild(document.createTextNode("\u00a0"));
 		}
 
 		if (!getParaState().isInTable()) {
@@ -239,6 +238,9 @@ public class DomEngine extends Engine {
 		}
 
 		updateParaState();
+		if (getCurrentPara().getFirstChild() == null) {
+			getCurrentPara().appendChild(document.createTextNode("\u00a0"));
+		}
 		setCurrentPara(null);
 	}
 

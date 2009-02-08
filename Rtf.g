@@ -66,11 +66,13 @@ compound:
 	AUTHOR^ TEXT |
 	TITLE^ TEXT |
 	OPERATOR^ TEXT |
-	CREATIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
-	REVTIM^ YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? |
+	CREATIM^ time |
+	REVTIM^ time |
+	PRINTIM^ time |
 	HEADER^ entity* ;
+time: YR NUMBER MO NUMBER DY NUMBER HR NUMBER MIN NUMBER (SEC NUMBER)? ;
 	
-fonttbl: FONTTBL^ (fontinfo | '{'! fontinfo '}'!)+ ;
+fonttbl: FONTTBL (fi+=fontinfo | '{' fi+=fontinfo '}')+ -> ^(FONTTBL $fi) ;
 fontinfo: F fn=NUMBER ( fontfamily | FCHARSET NUMBER | FPRQ NUMBER | unknown | text)* -> ^(F $fn text);
 
 colortbl: COLORTBL^ ((RED NUMBER)? (GREEN NUMBER)? (BLUE NUMBER)? TEXT)* ;
@@ -94,6 +96,7 @@ NBSP: '\\~' ;
 OTHER: '\\' ~('\n' | '\r' | '\\' | '\'' | '*' | '~' | '{' | '}' | 'a'..'z' | 'A'..'Z') { skip(); } ;
 
 //VIEWKIND: '\\viewkind' { afterControl = true; } ;
+PRINTIM: '\\printim' { afterControl = true; } ;
 CELL: '\\cell' { afterControl = true; } ;
 ROW: '\\row' { afterControl = true; } ;
 INTBL: '\\intbl' { afterControl = true; } ;

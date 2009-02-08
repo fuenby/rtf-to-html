@@ -162,8 +162,8 @@ public class DomEngine extends Engine {
 			bodyStyle.append("pt;");
 			bodyStyle.append(" }\n");
 
-			bodyStyle.append("table { border-collapse: collapse; border-bottom: solid 1px black; }\n");
-			bodyStyle.append("td { border-left: solid 1px black; border-right: solid 1px black; }\n");
+			bodyStyle.append("table { border-collapse: collapse; border-right: solid 1px black; border-bottom: solid 1px black; }\n");
+			bodyStyle.append("td { border-left: solid 1px black; border-top: solid 1px black; }\n");
 			styleNode.appendChild(document.createTextNode(bodyStyle.toString()));
 
 			getHead().appendChild(document.createTextNode("\n"));
